@@ -1,15 +1,15 @@
 
 #tests: non-fiction, crime, horror, war, love story
-import cache
-
-
+import cache_store
+import os
+import json
 from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
-cache = cache.Cache()
+cache = cache_store.Cache()
 
 def get_embedding(input_to_model):
 
@@ -60,7 +60,30 @@ def nearest_word(word1, word2):
    # print("Cosine distance: ", distance)
     return distance
 
+def new_bucket(name):
+    embedding = np.array(get_embedding(name))
+    cache.write_to_cache(name, embedding)
 
+def get_cache():
+    array = []
+    cache_file='cache.json'
+    if os.path.exists(cache_file):
+        with open(cache_file, 'r') as f:
+            cache = json.load(f)
+            for i in range(len(cache)):
+                array.append(cache.keys())
+        print(f"Cache loaded from {cache_file}")
+        return(array[0])
+    else:
+        return None
+
+def start_cache(starting_array):
+
+    for i in range(len(starting_array)):
+        print(starting_array[i-1], get_embedding(starting_array[i-1]))
+        cache.write_to_cache(starting_array[i-1], get_embedding(starting_array[i-1]))
+
+    
 
 
 
