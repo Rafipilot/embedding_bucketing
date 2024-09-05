@@ -13,7 +13,7 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 
 max_distance = 0.7
 
-cache = cache.PersistentCache()
+cache = cache.Cache()
 
 
 
