@@ -3,11 +3,10 @@ from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
 
-temp_dataset = ["cat", "dog", "spaceship"]
-
-embedding_dataset = []
+Genre=["Drama", "Commedy"]
 
 EMBEDDING_MODEL = "text-embedding-3-small"
+
 
 def get_embedding(input_to_model):
 
@@ -18,7 +17,7 @@ def get_embedding(input_to_model):
         model=EMBEDDING_MODEL
     )
 
-    print(response.data[0].embedding[:5])
+    #print(response.data[0].embedding[:5])
     np.array(response.data[0].embedding[:5])
     return response.data[0].embedding[:5]
 
@@ -42,14 +41,32 @@ def nearest_word(word1, word2):
 
     # Compute cosine similarity
     similarities = cosine_similarity(word2, word1)
-    print("Cosine similarity: ", similarities)
 
     # Compute cosine distance
     distance = 1 - similarities[0, 0]
 
     print("Cosine distance: ", distance)
+    return distance
+
+
 
 # Call the function to find nearest words
-word1 = input("word1: ")
-word2 = input("word2: ")
-nearest_word(word1, word2)
+word2 = input("Genre: ")
+Dis_list = []
+
+for genre in Genre:
+    distance = nearest_word(genre, word2)
+    Dis_list.append((genre, distance))
+
+# Sort by distance
+Dis_list.sort(key=lambda x: x[1])
+
+# Print the results
+for genre, distance in Dis_list:
+    print(f"Genre: {genre}, Distance: {distance}")
+
+# Find the closest genre
+closest_genre = Dis_list[0][0]
+print(f"The closest genre is: {closest_genre}")
+    
+
