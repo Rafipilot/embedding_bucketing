@@ -6,16 +6,10 @@ import cache
 from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
-#Buckets
-Genre=["Drama", "Commedy", "Action", "romance", "documentry"]
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
-max_distance = 0.7
-
 cache = cache.Cache()
-
-
 
 def get_embedding(input_to_model):
 
@@ -69,30 +63,5 @@ def nearest_word(word1, word2):
 
 
 
-
-# Call the function to find nearest words
-word2 = input("input genre: ")
-Dis_list = []
-
-for genre in Genre:
-    print("genre: ", genre)
-    distance = nearest_word(genre, word2)
-    Dis_list.append((genre, distance))
-
-# Sort by distance
-Dis_list.sort(key=lambda x: x[1])
-
-# Print the results
-for genre, distance in Dis_list:
-    print(f"Genre: {genre}, Distance: {distance}")
-
-# Find the closest genre
-closest_distance = Dis_list[0]
-print(closest_distance)
-closest_genre = Dis_list[0][0]
-if closest_distance[1]>max_distance:
-    print("make new bucket")
-
-print(f"The closest genre is: {closest_genre}")
 
 
