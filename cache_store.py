@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 class Cache:
-    def __init__(self, cache_file='cache.json'):
+    def __init__(self, cache_file):
         self.cache = {}
         self.cache_file = cache_file
         self.load_cache()

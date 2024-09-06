@@ -1,14 +1,18 @@
 import embedding_model_test
-import cache_store
+
 from embedding_model_test import nearest_word
 
+cache_file="cache_genre.json"
+cache = embedding_model_test.init(cache_file)
+print(cache)
 
 start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]
 
-Genre = embedding_model_test.get_cache()
-if Genre is None:
-    embedding_model_test.start_cache(start_Genre)
-    Genre = embedding_model_test.get_cache()
+Genre = embedding_model_test.get_cache(cache_file) # get the list of buckets from cache
+if Genre is None: # if the is no cache file
+    print("no file")
+    embedding_model_test.start_cache(start_Genre) # add the starting elements to the cache so we have a base of buckets to start with
+    Genre = embedding_model_test.get_cache(cache_file) # get the list of buckets from cache
 
 print(Genre)
 EMBEDDING_MODEL = "text-embedding-3-small"

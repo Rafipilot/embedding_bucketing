@@ -9,7 +9,10 @@ import numpy as np
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 
-cache = cache_store.Cache()
+def init(cache_file):
+    global cache 
+    cache = cache_store.Cache(cache_file)
+    return cache
 
 def get_embedding(input_to_model):
 
@@ -64,9 +67,8 @@ def new_bucket(name):
     embedding = np.array(get_embedding(name))
     cache.write_to_cache(name, embedding)
 
-def get_cache():
+def get_cache(cache_file):
     array = []
-    cache_file='cache.json'
     if os.path.exists(cache_file):
         with open(cache_file, 'r') as f:
             cache = json.load(f)
