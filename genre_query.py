@@ -43,5 +43,6 @@ if closest_distance[1]>max_distance:
     print("make new bucket for :", word2)
     embedding_model_test.new_bucket(word2)
     print("Sucessfully made new bucket for :", word2)
-
-print(f"The closest genre is: {closest_genre}")
+else:
+    print(f"The closest genre is: {closest_genre}")
+    embedding_model_test.adjust(word2, closest_genre)

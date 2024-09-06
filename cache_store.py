@@ -50,3 +50,16 @@ class Cache:
         if os.path.exists(self.cache_file):
             os.remove(self.cache_file)
         print("Cache cleared and cache file deleted.")
+
+
+
+    def adjusting_vectors(self, key1, key2):
+        # Check if the keys exist in the cache
+        array1_np = np.array(key1)
+        array2_np = np.array(key2)
+  
+        adjusted_embedding = (array1_np + array2_np) / 2
+        return adjusted_embedding
+
+
+

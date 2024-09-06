@@ -85,6 +85,13 @@ def start_cache(starting_array):
         print(starting_array[i-1], get_embedding(starting_array[i-1]))
         cache.write_to_cache(starting_array[i-1], get_embedding(starting_array[i-1]))
 
+def adjust(word, word2):
+    #word = get_embedding(word)
+    new_vec =  cache.adjusting_vectors(get_embedding(word), get_embedding(word2))
+    print("old vec:", word2)
+    cache.write_to_cache(word2, new_vec)
+
+
     
 
 
