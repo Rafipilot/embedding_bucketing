@@ -6,7 +6,10 @@ import json
 from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
-
+#
+from openai import OpenAI
+from config import openai
+client = OpenAI(api_key = openai,)
 EMBEDDING_MODEL = "text-embedding-3-small"
 
 def init(cache_file):
@@ -16,7 +19,7 @@ def init(cache_file):
 
 def get_embedding(input_to_model):
 
-    client = OpenAI(api_key = "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",)
+    
 
     response = client.embeddings.create(
         input=input_to_model,
@@ -78,6 +81,21 @@ def get_cache(cache_file):
         return(array[0])
     else:
         return None
+    
+## call gpt
+def llm_call(input_message):#llm call to get genre
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  
+        messages=[
+            {"role": "system", "content": "give a one word answer"},
+            {"role": "user", "content": input_message}
+        ],
+         max_tokens=5,
+        temperature=0.1
+    )
+    local_response = response.choices[0].message.content
+    return local_response
+
 
 def start_cache(starting_array):
 
