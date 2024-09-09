@@ -37,7 +37,7 @@ def normalize(embedding):
 
 
 # Function to find the nearest word by comparing distances
-def nearest_word(word1, word2):
+def nearest_word(word1, word2):  # embedding method
     # Get embeddings for both words
     word1_e = cache.read_from_cache(word1)
     #word2 = cache.read_from_cache(word2)
@@ -82,8 +82,8 @@ def get_cache(cache_file):
     else:
         return None
     
-## call gpt
-def llm_call(input_message):#llm call to get genre
+
+def llm_call(input_message): #llm call method
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",  
         messages=[

@@ -2,3 +2,4 @@ __pycache__/
 cache_theme.json
 cache_genre.json
 config.py
+cache_comparititve_title.json
