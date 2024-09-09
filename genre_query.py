@@ -23,10 +23,10 @@ max_distance = 0.7
 word2 = input("input genre: ")
 Dis_list = []
 
-for genre in Genre:
-    print("genre: ", genre)
-    distance = nearest_word(genre, word2)
-    Dis_list.append((genre, distance))
+for genre_bucket in Genre:
+    print("genre: ", genre_bucket)
+    distance = nearest_word(genre_bucket, word2)
+    Dis_list.append((genre_bucket, distance))
 
 # Sort by distance
 Dis_list.sort(key=lambda x: x[1])
