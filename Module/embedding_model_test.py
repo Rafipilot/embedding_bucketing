@@ -1,6 +1,6 @@
 
 #tests: non-fiction, crime, horror, war, love story
-import cache_store
+import Module.cache_store as cache_store
 import os
 import json
 from openai import OpenAI
