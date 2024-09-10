@@ -1,4 +1,4 @@
-import embedding_model_test
+import Module.embedding_model_test as embedding_model_test
 
 
 cache_file="cache_theme.json"

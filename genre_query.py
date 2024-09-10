@@ -1,6 +1,6 @@
-import embedding_model_test
+import Module.embedding_model_test as embedding_model_test
 
-from embedding_model_test import nearest_word
+from Module.embedding_model_test import nearest_word
 
 cache_file="cache_genre.json"
 cache = embedding_model_test.init(cache_file)

@@ -1,4 +1,4 @@
-import embedding_model_test
+import Module.embedding_model_test as embedding_model_test
 
 cache_file="cache_comparititve_title.json"
 cache = embedding_model_test.init(cache_file)
