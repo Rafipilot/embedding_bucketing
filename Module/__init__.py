@@ -9,7 +9,7 @@ from .theme_buckting import ThemeBuckting
 
 # You can also specify which modules should be exposed
 __all__ = [
-    'EmbeddingModel',
+    'embedding_buckting',
     'ComparativeTitleQuery',
     'Config',
     'GenreQuery',
