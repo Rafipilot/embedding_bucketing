@@ -6,7 +6,7 @@ from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
 from openai import OpenAI
-from Module.config import openai
+from config import openai
 client = OpenAI(api_key = openai,)
 EMBEDDING_MODEL = "text-embedding-3-small"
 
