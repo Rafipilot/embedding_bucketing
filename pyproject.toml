@@ -3,9 +3,9 @@ name = "embedding_buckting"
 version = "0.1.0"
 license = {file = "LICENSE.txt"}
 dependencies = [
-    "numpy==2.1.1",
-    "openai==1.44.1",
-    "scikit-learn==1.5.1"
+    "numpy",
+    "openai",
+    "scikit-learn"
 ]
 authors = [
   { name="Rafayel Latif", email="Rafayel.latif@gmail.com" }
