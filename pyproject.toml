@@ -1,0 +1,32 @@
+[project]
+name = "embedding_buckting"
+version = "0.1.0"
+license = {file = "LICENSE.txt"}
+dependencies = [
+    "numpy",
+]
+authors = [
+  { name="Rafayel Latif", email="Rafayel.latif@gmail.com" },
+]
+description = "embedding_buckting"
+readme = "README.md"
+requires-python = ">=3"
+classifiers = [
+    "Private :: Do Not Upload",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Artificial Life",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+]
+[build-system]
+requires = ["setuptools", "setuptools-scm"] # ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["embedding_buckting"]
+
+
+# updated with https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
