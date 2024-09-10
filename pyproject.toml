@@ -3,14 +3,16 @@ name = "embedding_buckting"
 version = "0.1.0"
 license = {file = "LICENSE.txt"}
 dependencies = [
-    "numpy",
+    "numpy==2.1.1",
+    "openai==1.44.1",
+    "scikit-learn==1.5.1"
 ]
 authors = [
-  { name="Rafayel Latif", email="Rafayel.latif@gmail.com" },
+  { name="Rafayel Latif", email="Rafayel.latif@gmail.com" }
 ]
 description = "embedding_buckting"
 readme = "README.md"
-requires-python = ">=3"
+requires-python = ">=3.7"
 classifiers = [
     "Private :: Do Not Upload",
     "Development Status :: 3 - Alpha",
@@ -21,10 +23,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
 ]
+
 [build-system]
-requires = ["setuptools", "setuptools-scm"] # ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
-
-
-
-# updated with https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
