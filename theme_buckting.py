@@ -22,7 +22,7 @@ Dis_list = []
 
 for theme in Theme:
     print("theme: ", theme)
-    distance = embedding_model_test.nearest_word(theme, word2)
+    distance = embedding_model_test.nearest_word_E_D(theme, word2)
     Dis_list.append((theme, distance))
 
 # Sort by distance

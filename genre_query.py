@@ -25,7 +25,7 @@ Dis_list = []
 
 for genre_bucket in Genre:
     print("genre: ", genre_bucket)
-    distance = nearest_word(genre_bucket, word2)
+    distance = embedding_model_test.nearest_word_E_D(genre_bucket, word2)
     Dis_list.append((genre_bucket, distance))
 
 # Sort by distance

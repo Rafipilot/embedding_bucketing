@@ -106,6 +106,59 @@ def adjust(word, word2): # Here we are finding the average of the 2 embedding ve
     print("old vec:", word2) 
     cache.write_to_cache(word2, new_vec) # writing new vector to the cache
 
+def nearest_word_E_D(word1, word2):  # functio to get the distance between to words using euclidean distance
+    # Get embeddings for both words
+    word1_e = cache.read_from_cache(word1) # get the embedding vector from cache
+    #word2 = cache.read_from_cache(word2)
+    if word1_e is None:
+        word1_e = np.array(get_embedding(word1))
+        print("l", word1_e)
+        cache.write_to_cache(word1, np.array(get_embedding(word1)))
+        word1_e = cache.read_from_cache(word1)
+
+    word2 = np.array(get_embedding(word2))
+
+    print("word_e", word1_e)
+
+    word1_e = normalize(word1_e)
+
+    word2 = normalize(word2)
+
+    #word1_e = word1_e.reshape(1, -1)  # Reshape to (1, n_features)
+    #word2 = word2.reshape(1, -1)  # Reshape to (1, n_features)
+
+    # Compute
+    distance = np.linalg.norm(word2 - word1_e)
+
+
+    return distance
+
+def averaging_and_compare(word1, word2):  # in progress
+    word1_e = cache.read_from_cache(word1)
+
+    if word1_e is None:
+        word1_e = np.array(get_embedding(word1))
+        print("l", word1_e)
+        cache.write_to_cache(word1, np.array(get_embedding(word1)))
+    
+
+    word2 = np.array(get_embedding(word2))
+
+    print("word_e", word1_e)
+
+    word1_e = normalize(word1_e)
+
+    word2 = normalize(word2)
+    print(word1_e)
+    #word1_e = word1_e.reshape(1, -1)  # Reshape to (1, n_features)
+    #word2 = word2.reshape(1, -1)  # Reshape to (1, n_features)
+
+    # Compute
+    distance = np.linalg.norm(word2 - word1_e)
+
+
+    return distance
+
 
     
 
