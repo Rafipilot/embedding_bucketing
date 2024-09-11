@@ -121,14 +121,48 @@ The caching feature speeds up the embedding lookup process. By saving previously
 
 ## Example Usage
 ```shell
+import embedding_buckting.embedding_model_test as em  # importing relevent modules
 
-# Initialize OpenAI client and cache
-config('your_openai_api_key')
-init('cache_file.json')
+from config import openai_key  # openai key  you should have your api key in a seperate folder in gitgnore
 
-# Get the nearest predefined category to a user input
-user_input = "romance"
-nearest_category = nearest_word(user_input, "love story")
-print(f"Nearest category to {user_input} is Love Story with a distance of {nearest_category}")
+em.config(openai) # setting up the module with your api key
+
+cache_file="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
+cache = em.init(cache_file) # initializing your cache file
+
+start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets 
+
+Genre = em.get_cache(cache_file) # get the list of buckets from cache  
+if Genre is None: # if the is no cache file
+    print("no file")
+    em.start_cache(start_Genre) # add the starting array to the cache so we have a base of buckets to start with Note: this automatically saves the embeddings with the associated word
+    Genre = em.get_cache(cache_file) # get the list of buckets from cache
+
+EMBEDDING_MODEL = "text-embedding-3-small" # embedding model to use
+
+max_distance = 0.7 # max distance a word can be from a bucket before we create a new bucket
+
+
+word2 = input("input genre: ") # input from user 
+Dis_list = [] # initializing the list to store buckets and their distance from the input word
+
+for genre_bucket in Genre: # looping through the bucket array
+    distance = em.nearest_word_E_D(genre_bucket, word2) # getting distance between input word and the bucket
+    Dis_list.append((genre_bucket, distance))  adding bucket and distance to the list 
+
+# Sort by distance
+Dis_list.sort(key=lambda x: x[1])
+
+# Print the results
+for genre, distance in Dis_list:
+    print(f"Genre: {genre}, Distance: {distance}")
+
+# Find the closest genre
+closest_distance = Dis_list[0]
+closest_genre = Dis_list[0][0] # finding the closest bucket
+if closest_distance[1]>max_distance: # if the distance is greater than max distance 
+    em.new_bucket(word2) create a new bucket
+else:
+    em.adjust(word2, closest_genre) # adjust the embeddings to average the old and the new one
 ```
 Look at our examples file in our repo to get a better idea of how it works in practice!
