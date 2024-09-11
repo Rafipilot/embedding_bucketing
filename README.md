@@ -1,1 +1,5 @@
-#to install: pip install git+https://github.com/Rafipilot/embedding_buckting
+
+#to install: 
+```bash
+pip install git+https://github.com/Rafipilot/embedding_buckting
+```
