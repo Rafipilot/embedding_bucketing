@@ -1,16 +1,20 @@
-import Module.embedding_model_test as embedding_model_test
+import embedding_buckting
+
+from config import openai
+
+embedding_buckting.config(openai)
 
 
 cache_file="cache_theme.json"
-cache = embedding_model_test.init(cache_file)
+cache = embedding_buckting.init(cache_file)
 
 
 
-Theme = embedding_model_test.get_cache(cache_file) # get the list of buckets from cache
+Theme = embedding_buckting.get_cache(cache_file) # get the list of buckets from cache
 if Theme is None: # if the is no cache file
     start_theme = ["Love", "Sacrfice", "Sad", "Death", "Dark"]
-    embedding_model_test.start_cache(start_theme) # add the starting elements to the cache so we have a base of buckets to start with
-    Theme= embedding_model_test.get_cache(cache_file) # get the list of buckets from cache
+    embedding_buckting.start_cache(start_theme) # add the starting elements to the cache so we have a base of buckets to start with
+    Theme= embedding_buckting.get_cache(cache_file) # get the list of buckets from cache
 
 print(Theme)
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -22,7 +26,7 @@ Dis_list = []
 
 for theme in Theme:
     print("theme: ", theme)
-    distance = embedding_model_test.nearest_word_E_D(theme, word2)
+    distance = embedding_buckting.nearest_word_E_D(theme, word2)
     Dis_list.append((theme, distance))
 
 # Sort by distance
@@ -34,7 +38,7 @@ print(closest_distance)
 closest_theme = Dis_list[0][0]
 if closest_distance[1]>max_distance:
     print("make new bucket for :", word2)
-    embedding_model_test.new_bucket(word2)
+    embedding_buckting.new_bucket(word2)
     print("Sucessfully made new bucket for :", word2)
 else:
     print(f"The closest theme is: {closest_theme}")

@@ -1,4 +1,5 @@
 __pycache__/
+run/
 cache_theme.json
 cache_genre.json
 config.py
