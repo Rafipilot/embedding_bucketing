@@ -4,11 +4,4 @@
 from .embedding_model_test import *
 
 
-# You can also specify which modules should be exposed
-__all__ = [
-    'embedding_buckting',
-    'ComparativeTitleQuery',
-    'Config',
-    'GenreQuery',
-    'ThemeBuckting'
-]
+__version__ = "0.0.10"
