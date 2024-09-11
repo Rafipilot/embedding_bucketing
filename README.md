@@ -3,22 +3,27 @@
 ## Overview
 This Python program enables users to compare words or phrases using semantic embeddings, powered by OpenAI's language models. It uses vector embeddings to compute distances between words based on their semantic meanings, allowing for tasks like finding the nearest word, averaging word embeddings, and comparing distances between words. The program also incorporates a caching system to store and retrieve word embeddings, making future comparisons faster and more efficient.
 
-The application of this program is ideal in cases where predefined/select outputs are required from variable inputs, such as in situations where a system needs to group or "bucket" words into similar categories based on their semantic similarity. The caching feature is a useful, but optional, amenity for improving efficiency.
+The application of this program is ideal in cases where predefined/select outputs are required from variable inputs, such as in situations where a system needs to group or "bucket" words into similar categories based on their semantic similarity. 
 
 
-## To install: 
+## Get set up: 
 ```bash
 pip install git+https://github.com/Rafipilot/embedding_buckting
 ```
 
+
 ## Features
-1. Semantic Similarity: Uses OpenAI's embeddings to compute the semantic similarity or distance between words.
-2. Word Bucketing: Groups words into predefined categories based on their similarity, useful when a system requires a limited set of outputs from many potential inputs.
-3. Cache System: Efficiently stores embeddings in a JSON cache file, reducing API calls and speeding up repeated computations.
-4.Support for Multiple Distance Metrics:
-    Cosine Similarity
-    Euclidean Distance
-5.Averaging of Embeddings: Allows for blending the meanings of two words by averaging their embeddings and storing the result.
+### 1. Semantic Similarity:
+Uses OpenAI's embeddings to compute the semantic similarity or distance between words.
+### 2. Word Bucketing: 
+Groups words into predefined categories based on their similarity, useful when a system requires a limited set of outputs from many potential inputs.
+### 3. Cache System: 
+
+Efficiently stores embeddings in a JSON cache file, reducing API calls and speeding up repeated computations.
+### 4. Support for Multiple Distance Metrics:
+Cosine Similarity, Euclidean Distance + more coming
+### 5. Averaging of Embeddings:
+Allows for blending the meanings of two words by averaging their embeddings and storing the result.
 
 ## How it Works
 
@@ -39,8 +44,10 @@ The program supports blending the meaning of two words by averaging their embedd
 
 
 
-### Documentation
-Functions and Their Usage
+## Documentation
+
+#### Note: 
+use ```import embedding_buckting.embedding_model_test``` to get the model
 
 1.
 ```bash
@@ -59,7 +66,7 @@ Initializes the cache system by loading the cache from a file or creating a new 
  ```bash
    get_embedding(input_to_embedding_model)
   ```
-Retrieves the embedding for a given word/phrase using OpenAI's embedding API.
+Returns the embedding for a given word/phrase using OpenAI's embedding API.
 
 4.
  ```bash
@@ -83,28 +90,45 @@ Creates a new word bucket by generating the embedding of the word and saving it 
  ```bash
    llm_call(input_message)
   ```
-Makes a call to an LLM (e.g., GPT-3.5) to get a one-word answer based on the input.
+Makes a call to an LLM (e.g., GPT-3.5) to get a one-word answer based on the input and returns the output.
 
 8.
+ ```bash
+   adjust(word, word2)
+  ```
+Averages the embeddings of two words and replaces the old vector of the second word with the new averaged vector in the cache but keeps the name the same.
+
+9 (not yet implemented). 
+ ```bash
+   averaging_and_compare(word1, word2)
+  ```
+
+10
+```bash
+    get_cache(cache_file_name)
+```
+Returns array of the existing cache file and returns none if it does not exist.
+
+11.
  ```bash
    start_cache(starting_array)
   ```
 Preloads the cache with embeddings from an array of words.
 
-9.
- ```bash
-   adjust(word, word2)
-  ```
-Averages the embeddings of two words and replaces the old vector of the second word with the new averaged vector.
 
-10 (not yet implemented). 
- ```bash
-   averaging_and_compare(word1, word2)
-  ```
-Averages the embeddings of two words and compares their new embeddings to compute the distance.
+## Caching system
+The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs.
 
+## Example Usage
+```shell
 
+# Initialize OpenAI client and cache
+config('your_openai_api_key')
+init('cache_file.json')
 
-
-
-
+# Get the nearest predefined category to a user input
+user_input = "romance"
+nearest_category = nearest_word(user_input, "love story")
+print(f"Nearest category to {user_input} is Love Story with a distance of {nearest_category}")
+```
+Look at our examples file in our repo to get a better idea of how it works in practice!
