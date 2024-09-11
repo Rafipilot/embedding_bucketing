@@ -23,28 +23,5 @@ max_distance = 0.7
 
 
 word2 = input("input genre: ")
-Dis_list = []
+closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre)
 
-for genre_bucket in Genre:
-    print("genre: ", genre_bucket)
-    distance = em.nearest_word_E_D(genre_bucket, word2)
-    Dis_list.append((genre_bucket, distance))
-
-# Sort by distance
-Dis_list.sort(key=lambda x: x[1])
-
-# Print the results
-for genre, distance in Dis_list:
-    print(f"Genre: {genre}, Distance: {distance}")
-
-# Find the closest genre
-closest_distance = Dis_list[0]
-print(closest_distance)
-closest_genre = Dis_list[0][0]
-if closest_distance[1]>max_distance:
-    print("make new bucket for :", word2)
-    em.new_bucket(word2)
-    print("Sucessfully made new bucket for :", word2)
-else:
-    print(f"The closest genre is: {closest_genre}")
-    em.adjust(word2, closest_genre)

@@ -31,7 +31,7 @@ def get_embedding(input_to_model):
     return response.data[0].embedding[:5]
 
 
-def normalize(embedding):
+def normalize(embedding): # inbuilt
     norm = np.linalg.norm(embedding)
     return embedding / norm if norm > 0 else embedding
 
@@ -162,6 +162,36 @@ def averaging_and_compare(word1, word2):  # in progress
 
     return distance
 
+
+def auto_sort(word, max_distance, bucket_array):
+
+    Dis_list = []
+
+    for genre_bucket in bucket_array:
+        print("genre: ", genre_bucket)
+        distance = nearest_word_E_D(genre_bucket, word)
+        Dis_list.append((genre_bucket, distance))
+
+    # Sort by distance
+    Dis_list.sort(key=lambda x: x[1])
+
+    # Print the results
+    for genre, distance in Dis_list:
+        print(f"Genre: {genre}, Distance: {distance}")
+
+    # Find the closest genre
+    closest_distance = Dis_list[0]
+    print(closest_distance)
+    closest_genre = Dis_list[0][0]
+
+    if closest_distance[1]>max_distance:
+        print("make new bucket for :", word)
+        new_bucket(word)
+        print("Sucessfully made new bucket for :", word)
+    else:
+        print(f"The closest genre is: {closest_genre}")
+        adjust(word, closest_genre)
+        return closest_distance, closest_genre
 
 
 
