@@ -52,7 +52,7 @@ The program supports blending the meaning of two words by averaging their embedd
 ```bash
    config(apikey)
 ```
-Initializes the OpenAI client with the provided API key.
+You need to pass your Openai api key through to the config function to setup the openai client.
 
 
 2.
@@ -132,7 +132,7 @@ import embedding_buckting.embedding_model_test as em  # importing relevent modul
 
 from config import openai_key  # openai key  you should have your api key in a seperate folder in gitgnore
 
-em.config(openai) # setting up the module with your api key
+em.config(openai) # setting up the module, here you pass your personal Openai api key through
 
 cache_file="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
 cache = em.init(cache_file) # initializing your cache file
@@ -147,8 +147,10 @@ if Genre is None: # if the is no cache file
 
 EMBEDDING_MODEL = "text-embedding-3-small" # embedding model to use
 
+input_genre = input("Input a genre: ")
+
 max_distance = 0.7 # max distance a word can be from a bucket before we create a new bucket
-closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
-print(")
+closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
+print(closest_genre)
 ```
 Look at our examples file in our repo to get a better idea of how it works in practice!
