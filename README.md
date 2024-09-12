@@ -40,20 +40,19 @@ New categories or "buckets" can be created with the new_bucket() function. Each 
 Embeddings are saved in a cache file (in JSON format) to prevent redundant API calls. This improves performance by allowing for quick lookups of word embeddings from the cache when they have already been generated.
 
 ### 5. Averaging Embeddings
-The program supports blending the meaning of two words by averaging their embeddings using the adjust() function, which can then be stored in the cache for future use.
+The program supports blending the meaning of buckets by averaging their embeddings using the adjust() function, which can then be stored in the cache for future use.
 
 
 
 ## Documentation
 
-#### Note: 
-use ```import embedding_buckting.embedding_model_test``` to get the model
+#### Note: use ```import embedding_buckting.embedding_model_test``` to get the model
 
 1.
 ```bash
    config(apikey)
 ```
-Initializes the OpenAI client with the provided API key.
+You need to pass your Openai api key through to the config function to setup the openai client.
 
 
 2.
@@ -78,7 +77,7 @@ Compares two words using their cosine similarity and returns the semantic distan
  ```bash
    nearest_word_E_D(word1, word2)
   ```
-Compares two words using Euclidean distance and returns the distance between their embeddings.
+Compares two words using Euclidean distance and returns the semantic distance between their embeddings.
 
 6.
  ```bash
@@ -112,8 +111,16 @@ Returns array of the existing cache file and returns none if it does not exist.
 11.
  ```bash
    start_cache(starting_array)
+```
+12
+```bash
+   auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc) 
   ```
-Preloads the cache with embeddings from an array of words.
+Max Distance: max distance between the closest bucket and the input word
+
+Type of Distance calc must be either "EUCLIDEAN DISTANCE" or "COSINE_SIMILARITY" if input is not valid then auto uses euclidean distance
+
+Returns the closest distance and the closest bucket
 
 
 ## Caching system
@@ -125,7 +132,7 @@ import embedding_buckting.embedding_model_test as em  # importing relevent modul
 
 from config import openai_key  # openai key  you should have your api key in a seperate folder in gitgnore
 
-em.config(openai) # setting up the module with your api key
+em.config(openai) # setting up the module, here you pass your personal Openai api key through
 
 cache_file="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
 cache = em.init(cache_file) # initializing your cache file
@@ -140,29 +147,10 @@ if Genre is None: # if the is no cache file
 
 EMBEDDING_MODEL = "text-embedding-3-small" # embedding model to use
 
+input_genre = input("Input a genre: ")
+
 max_distance = 0.7 # max distance a word can be from a bucket before we create a new bucket
-
-
-word2 = input("input genre: ") # input from user 
-Dis_list = [] # initializing the list to store buckets and their distance from the input word
-
-for genre_bucket in Genre: # looping through the bucket array
-    distance = em.nearest_word_E_D(genre_bucket, word2) # getting distance between input word and the bucket
-    Dis_list.append((genre_bucket, distance))  adding bucket and distance to the list 
-
-# Sort by distance
-Dis_list.sort(key=lambda x: x[1])
-
-# Print the results
-for genre, distance in Dis_list:
-    print(f"Genre: {genre}, Distance: {distance}")
-
-# Find the closest genre
-closest_distance = Dis_list[0]
-closest_genre = Dis_list[0][0] # finding the closest bucket
-if closest_distance[1]>max_distance: # if the distance is greater than max distance 
-    em.new_bucket(word2) create a new bucket
-else:
-    em.adjust(word2, closest_genre) # adjust the embeddings to average the old and the new one
+closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
+print(closest_genre)
 ```
 Look at our examples file in our repo to get a better idea of how it works in practice!
