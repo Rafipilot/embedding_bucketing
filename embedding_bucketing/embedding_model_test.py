@@ -180,10 +180,10 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc):
 
     # Find the closest genre
     closest_distance = Dis_list[0]
-    print(closest_distance)
     closest_bucket  = Dis_list[0][0]
-
+    print("cldis", closest_distance[1])
     if closest_distance[1]>max_distance:
+        print("making new bucket")
         new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
     else:
         print(f"The closest genre is: {closest_bucket}")
