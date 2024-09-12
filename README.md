@@ -46,8 +46,7 @@ The program supports blending the meaning of two words by averaging their embedd
 
 ## Documentation
 
-#### Note: 
-use ```import embedding_buckting.embedding_model_test``` to get the model
+#### Note: use ```import embedding_buckting.embedding_model_test``` to get the model
 
 1.
 ```bash
