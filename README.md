@@ -78,7 +78,7 @@ Compares two words using their cosine similarity and returns the semantic distan
  ```bash
    nearest_word_E_D(word1, word2)
   ```
-Compares two words using Euclidean distance and returns the distance between their embeddings.
+Compares two words using Euclidean distance and returns the semantic distance between their embeddings.
 
 6.
  ```bash
@@ -112,8 +112,16 @@ Returns array of the existing cache file and returns none if it does not exist.
 11.
  ```bash
    start_cache(starting_array)
+
+12
+```bash
+   auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc) 
   ```
-Preloads the cache with embeddings from an array of words.
+Max Distance: max distance between the closest bucket and the input word
+
+Type of Distance calc must be either "EUCLIDEAN DISTANCE" or "COSINE_SIMILARITY" if input is not valid then auto uses euclidean distance
+
+Returns the closest distance and the closest bucket
 
 
 ## Caching system
