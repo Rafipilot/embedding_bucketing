@@ -1,4 +1,4 @@
-import embedding_buckting.embedding_model_test as em
+import embedding_bucketing.embedding_model_test as em
 
 from config import openai
 

@@ -1,4 +1,4 @@
-import embedding_buckting.embedding_model_test as em
+import embedding_bucketing.embedding_model_test as em
 
 from config import openai  # openai key
 
@@ -20,7 +20,6 @@ print(Genre)
 EMBEDDING_MODEL = "text-embedding-3-small"
 
 max_distance = 0.7
-
 
 word2 = input("input genre: ")
 closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE")
