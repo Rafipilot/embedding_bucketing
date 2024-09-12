@@ -5,7 +5,7 @@ import json
 from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity  # to calculate distances
 import numpy as np
-from openai import OpenAI
+
 
 
 def config(apikey):
@@ -48,7 +48,6 @@ def nearest_word(word1, word2):  # embedding method
 
     word2 = np.array(get_embedding(word2))
 
-    print("word_e", word1_e)
 
     word1_e = normalize(word1_e)
 
@@ -121,8 +120,6 @@ def nearest_word_E_D(word1, word2):  # functio to get the distance between to wo
 
     word2 = np.array(get_embedding(word2))
 
-    print("word_e", word1_e)
-
     word1_e = normalize(word1_e)
 
     word2 = normalize(word2)
@@ -147,8 +144,6 @@ def averaging_and_compare(word1, word2):  # in progress
 
     word2 = np.array(get_embedding(word2))
 
-    print("word_e", word1_e)
-
     word1_e = normalize(word1_e)
 
     word2 = normalize(word2)
@@ -163,13 +158,17 @@ def averaging_and_compare(word1, word2):  # in progress
     return distance
 
 
-def auto_sort(word, max_distance, bucket_array):
+def auto_sort(word, max_distance, bucket_array, type_of_distance_calc):
 
     Dis_list = []
 
     for genre_bucket in bucket_array:
-        print("genre: ", genre_bucket)
-        distance = nearest_word_E_D(genre_bucket, word)
+        if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":
+            distance = nearest_word_E_D(genre_bucket, word)
+        if type_of_distance_calc.upper() == "COSINE SIMILARITY":
+            distance = nearest_word(genre_bucket, word)
+        else:
+            distance = nearest_word_E_D(genre_bucket, word)
         Dis_list.append((genre_bucket, distance))
 
     # Sort by distance
@@ -182,16 +181,13 @@ def auto_sort(word, max_distance, bucket_array):
     # Find the closest genre
     closest_distance = Dis_list[0]
     print(closest_distance)
-    closest_genre = Dis_list[0][0]
+    closest_bucket  = Dis_list[0][0]
 
     if closest_distance[1]>max_distance:
-        print("make new bucket for :", word)
-        new_bucket(word)
-        print("Sucessfully made new bucket for :", word)
+        new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
     else:
-        print(f"The closest genre is: {closest_genre}")
-        adjust(word, closest_genre)
-        return closest_distance, closest_genre
+        print(f"The closest genre is: {closest_bucket}")
+    return closest_distance, closest_bucket
 
 
 
