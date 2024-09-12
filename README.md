@@ -40,7 +40,7 @@ New categories or "buckets" can be created with the new_bucket() function. Each 
 Embeddings are saved in a cache file (in JSON format) to prevent redundant API calls. This improves performance by allowing for quick lookups of word embeddings from the cache when they have already been generated.
 
 ### 5. Averaging Embeddings
-The program supports blending the meaning of two words by averaging their embeddings using the adjust() function, which can then be stored in the cache for future use.
+The program supports blending the meaning of buckets by averaging their embeddings using the adjust() function, which can then be stored in the cache for future use.
 
 
 
