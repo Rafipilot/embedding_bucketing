@@ -8,7 +8,7 @@ cache_file="cache_genre.json"
 cache = em.init(cache_file)
 print(cache)
 
-start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]
+start_Genre = ["Drama", "Comedy", "Action", "romance", "documentary"]
 
 Genre = em.get_cache(cache_file) # get the list of buckets from cache
 if Genre is None: # if the is no cache file
