@@ -8,7 +8,7 @@ The application of this program is ideal in cases where predefined/select output
 
 ## Get set up: 
 ```bash
-pip install git+https://github.com/Rafipilot/embedding_buckting
+pip install git+https://github.com/Rafipilot/embedding_bucketing
 ```
 
 
