@@ -22,5 +22,5 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 max_distance = 0.5
 
 word2 = input("input genre: ")
-closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE")
+closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
 

@@ -15,7 +15,7 @@ if compartive_title_buckets is None:
     compartive_title_buckets = em.get_cache(cache_file)
 
 comparitive_title_input = input("Enter comparitive titles: ")
-comparitive_title_input = comparitive_title_input + "Using the provided title as input, please identify the closest matching title from the following list: " + str(compartive_title_buckets)
+comparitive_title_input = comparitive_title_input + "Using the provided title as input, please identify the closest matching title from the following list or if none are that close then say none: " + str(compartive_title_buckets)
 
 output = em.llm_call(comparitive_title_input)
 print(output)

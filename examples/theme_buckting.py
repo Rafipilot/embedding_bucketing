@@ -1,4 +1,4 @@
-import embedding_bucketing.embedding_model_test as em
+import embedding_bucketing.embedding_model as em
 
 from examples.config import openai
 
@@ -12,7 +12,7 @@ cache = em.init(cache_file)
 
 Theme = em.get_cache(cache_file) # get the list of buckets from cache
 if Theme is None: # if the is no cache file
-    start_theme = ["Love", "Sacrfice", "Sad", "Death", "Dark"]
+    start_theme = ["Love", "Sacrifice", "Sad", "Death", "Dark"]
     em.start_cache(start_theme) # add the starting elements to the cache so we have a base of buckets to start with
     Theme= em.get_cache(cache_file) # get the list of buckets from cache
 
