@@ -27,8 +27,8 @@ def get_embedding(input_to_model):
     )
 
     #print(response.data[0].embedding[:5])
-    np.array(response.data[0].embedding[:5])
-    return response.data[0].embedding[:5]
+   # np.array(response.data[0].embedding[:5])
+    return response.data[0].embedding
 
 
 def normalize(embedding): # inbuilt

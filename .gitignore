@@ -2,14 +2,16 @@ __pycache__/
 
 #virtual environments
 venv/
-.venv/
+.venv
+run/
 
 #enviroment variables and secrets
 .env
 config.py
 
-run/
+
 cache_theme.json
 cache_genre.json
+cache_comparititve_title.json
 embedding_buckting.egg-info/
 .json

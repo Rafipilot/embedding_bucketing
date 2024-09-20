@@ -1,4 +1,4 @@
-import embedding_bucketing.embedding_model as em
+import embedding_bucketing.embedding_model_test as em
 
 from examples.config import openai
 
