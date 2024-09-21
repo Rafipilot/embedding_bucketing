@@ -112,6 +112,7 @@ Returns array of the existing cache file and returns none if it does not exist.
  ```bash
    start_cache(starting_array)
 ```
+Writes to the cache the starting array of buckets. e.g if you didnt have any buckets to read from the cache you would call this function and pass through a array of buckets to write to the cache.
 12
 ```bash
    auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc) 
@@ -127,30 +128,29 @@ Returns the closest distance and the closest bucket
 The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs.
 
 ## Example Usage
+#### Comparing an input genre to an array of genres and returning the most semantically similar one
 ```shell
 import embedding_buckting.embedding_model_test as em  # importing relevent modules
 
-from config import openai_key  # openai key  you should have your api key in a seperate folder in gitgnore
+from config import openai_key  # importing your personal openai key you should have your api key in a seperate folder in gitgnore
 
 em.config(openai) # setting up the module, here you pass your personal Openai api key through
 
 cache_file="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
-cache = em.init(cache_file) # initializing your cache file
+cache = em.init(cache_file) # initializing your cache file with name cache_file
 
-start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets 
+start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of bucket, if there are no buckets found then this is the list of buckets that will be used
 
 Genre = em.get_cache(cache_file) # get the list of buckets from cache  
 if Genre is None: # if the is no cache file
     print("no file")
     em.start_cache(start_Genre) # add the starting array to the cache so we have a base of buckets to start with Note: this automatically saves the embeddings with the associated word
-    Genre = em.get_cache(cache_file) # get the list of buckets from cache
-
-EMBEDDING_MODEL = "text-embedding-3-small" # embedding model to use
+    Genre = em.get_cache(cache_file) # get the list of buckets from cache now that we have added the starting array of buckets
 
 input_genre = input("Input a genre: ")
 
-max_distance = 0.7 # max distance a word can be from a bucket before we create a new bucket
+max_distance = 0.7 # max distance a word can be from the closest bucket before we create a new bucket
 closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
-print(closest_genre)
+print(closest_genre) # printing the closest bucket's name
 ```
 Look at our examples file in our repo to get a better idea of how it works in practice!
