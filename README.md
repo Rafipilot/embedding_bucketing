@@ -128,6 +128,7 @@ Returns the closest distance and the closest bucket
 The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs.
 
 ## Example Usage
+#### Comparing an input genre to an array of genres and returning the most semantically similar one
 ```shell
 import embedding_buckting.embedding_model_test as em  # importing relevent modules
 
