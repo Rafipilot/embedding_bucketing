@@ -112,6 +112,7 @@ Returns array of the existing cache file and returns none if it does not exist.
  ```bash
    start_cache(starting_array)
 ```
+Writes to the cache the starting array of buckets. e.g if you didnt have any buckets to read from the cache you would call this function and pass through a array of buckets to write to the cache.
 12
 ```bash
    auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc) 
