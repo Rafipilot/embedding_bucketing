@@ -17,10 +17,12 @@ if Genre is None: # if the is no cache file
     Genre = em.get_cache(cache_file) # get the list of buckets from cache
 
 print(Genre)
-EMBEDDING_MODEL = "text-embedding-3-small"
+
 
 max_distance = 0.5
 
 word2 = input("input genre: ")
 closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
+
+
 
