@@ -21,8 +21,8 @@ print(Genre)
 
 max_distance = 0.5
 
-word2 = input("input genre: ")
-closest_distance, closest_genre = em.auto_sort(word2, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
+input_genre = input("input genre: ")
+closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
 
 
 

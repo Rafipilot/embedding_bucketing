@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='embedding_buckting',   # Name of your package
+    name='embedding_bucketing',   # Name of your package
     version='0.1.0',            # Version number
     packages=find_packages(),   # Automatically find all packages in the source folder
     install_requires=[
@@ -9,7 +9,7 @@ setup(
         'openai==1.44.1',
         'scikit-learn==1.5.1'
     ],        # List your project dependencies here
-    url='https://github.com/Rafipilot/embedding_buckting',  # URL of your GitHub repo
+    url='https://github.com/Rafipilot/embedding_bucketing',  # URL of your GitHub repo
     author='Rafayel Latif',
     author_email='rafayel.latif@gmail.com',
     description='Bucketing using text embeddings',
