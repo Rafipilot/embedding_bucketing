@@ -132,14 +132,12 @@ The caching feature speeds up the embedding lookup process. By saving previously
 ```shell
 import embedding_buckting.embedding_model_test as em  # importing relevent modules
 
-from config import openai_key  # importing your personal openai key you should have your api key in a seperate folder in gitgnore
-
 em.config(openai) # setting up the module, here you pass your personal Openai api key through
 
-cache_file="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
-cache = em.init(cache_file) # initializing your cache file with name cache_file
+cache_file_name="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
+cache = em.init(cache_file_name) # initializing your cache file with name cache_file
 
-start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of bucket, if there are no buckets found then this is the list of buckets that will be used
+start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
 
 Genre = em.get_cache(cache_file) # get the list of buckets from cache  
 if Genre is None: # if the is no cache file
