@@ -161,7 +161,7 @@ def averaging_and_compare(word1, word2):  # in progress
     return distance
 
 
-def auto_sort(word, max_distance, bucket_array, type_of_distance_calc):
+def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
     print("bucket array:, ", bucket_array)
     for genre_bucket in bucket_array:
@@ -186,15 +186,17 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc):
     # Find the closest genre
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
-    print("closest distance", closest_distance[1])
     if closest_distance[1]>max_distance:
         print("Making New Bucket!")
         new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
-    else:
-        print(f"The closest genre is: {closest_bucket}")
+        closest_bucket = word
 
     bucket_id = cache.get_id(closest_bucket)
-    return closest_distance, closest_bucket, bucket_id
+    num_binary_digits = amount_of_binary_digits
+    bucket_binary = np.array(list(np.binary_repr(bucket_id, num_binary_digits)), dtype=int)
+
+
+    return closest_distance, closest_bucket, bucket_id, bucket_binary
 
 
 

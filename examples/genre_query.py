@@ -19,7 +19,8 @@ max_distance = 0.7
 
 input_genre = input("input genre: ")
 
-closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
+closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", num_binary_digits = 4)
+print(closest_genre, bucket_binary_encoding)
 
 
 
