@@ -16,12 +16,10 @@ if Genre is None: # if the is no cache file
     em.start_cache(start_Genre) # add the starting elements to the cache so we have a base of buckets to start with
     Genre = em.get_cache(cache_file) # get the list of buckets from cache
 
-print(Genre)
-
-
-max_distance = 0.5
+max_distance = 0.7
 
 input_genre = input("input genre: ")
+
 closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY")
 
 

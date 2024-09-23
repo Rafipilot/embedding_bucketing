@@ -43,7 +43,7 @@ def nearest_word(word1, word2):  # embedding method
     #word2 = cache.read_from_cache(word2)
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-        print("l", word1_e)
+       # print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
 
     word2 = np.array(get_embedding(word2))
@@ -99,13 +99,12 @@ def llm_call(input_message): #llm call method
 def start_cache(starting_array):  # preload cache with starting array of items
 
     for i in range(len(starting_array)):  # looping through all items in array
-        print(starting_array[i-1], get_embedding(starting_array[i-1]))   
+     #   print(starting_array[i-1], get_embedding(starting_array[i-1]))   
         cache.write_to_cache(starting_array[i-1], get_embedding(starting_array[i-1])) # getting embedding vector for word and adding it to the cache
 
 def adjust(word, word2): # Here we are finding the average of the 2 embedding vectors and replacing the old vectors with the new ones
     #word = get_embedding(word)
     new_vec =  cache.adjusting_vectors(get_embedding(word), get_embedding(word2)) # find the average
-    print("old vec:", word2) 
     cache.write_to_cache(word2, new_vec) # writing new vector to the cache
 
 def nearest_word_E_D(word1, word2):  # functio to get the distance between to words using euclidean distance
@@ -114,7 +113,6 @@ def nearest_word_E_D(word1, word2):  # functio to get the distance between to wo
     #word2 = cache.read_from_cache(word2)
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-        print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
         word1_e = cache.read_from_cache(word1)
 
@@ -138,7 +136,6 @@ def averaging_and_compare(word1, word2):  # in progress
 
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-        print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
     
 
@@ -147,7 +144,7 @@ def averaging_and_compare(word1, word2):  # in progress
     word1_e = normalize(word1_e)
 
     word2 = normalize(word2)
-    print(word1_e)
+
     #word1_e = word1_e.reshape(1, -1)  # Reshape to (1, n_features)
     #word2 = word2.reshape(1, -1)  # Reshape to (1, n_features)
 
@@ -183,7 +180,7 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc):
     closest_bucket  = Dis_list[0][0]
     print("cldis", closest_distance[1])
     if closest_distance[1]>max_distance:
-        print("making new bucket")
+        print("Making New Bucket!")
         new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
     else:
         print(f"The closest genre is: {closest_bucket}")

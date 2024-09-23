@@ -1,4 +1,4 @@
-# embedding_buckting/__init__.py
+# embedding_bucketing/__init__.py
 
 # Import specific classes or functions to make them available at the package level
 import embedding_bucketing.embedding_model_test
