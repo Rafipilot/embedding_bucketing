@@ -35,8 +35,6 @@ def get_embedding(input_to_model):
         model=EMBEDDING_MODEL
     )
 
-    #print(response.data[0].embedding[:5])
-   # np.array(response.data[0].embedding[:5])
     return response.data[0].embedding
 
 
@@ -47,13 +45,11 @@ def normalize(embedding): # inbuilt
 
 # Function to find the nearest word by comparing distances
 def nearest_word(word1, word2):  # embedding method
-    print(word1, word2)
     # Get embeddings for both words
     word1_e = cache.get_embedding_from_cache(word1) # get the embedding vector from cache
     #word2 = cache.read_from_cache(word2)
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-       # print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
 
     word2 = np.array(get_embedding(word2))
@@ -87,7 +83,6 @@ def get_cache(cache_file):
             cache_data
             buckets = cache_data.get("buckets", {})
             array = list(buckets.keys())
-        print(f"Cache loaded from {cache_file}")
         return array
     else:
         return None
@@ -189,6 +184,7 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
     if closest_distance[1]>max_distance:
+        
         print("Making New Bucket!")
         new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
         closest_bucket = word
@@ -242,7 +238,6 @@ class Cache:
         if key in self.cache:
             return self.cache[key]["id"]
         else:
-            #print(f"Cache miss! {key} not found.")
             return None
         
     def get_id(self, key):
@@ -250,6 +245,7 @@ class Cache:
             return self.cache[key]["id"]
         else:
             return None
+    
     
     def get_embedding_from_cache(self, key):
         if key in self.cache:
