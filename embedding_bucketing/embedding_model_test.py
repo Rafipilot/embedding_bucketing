@@ -164,23 +164,23 @@ def averaging_and_compare(word1, word2):  # in progress
 
 def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
-    for genre_bucket in bucket_array:
+    for bucket in bucket_array:
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":
-            distance = nearest_word_E_D(genre_bucket, word)
+            distance = nearest_word_E_D(bucket, word)
         if type_of_distance_calc.upper() == "COSINE SIMILARITY":
-            distance = nearest_word(genre_bucket, word)
+            distance = nearest_word(bucket, word)
         else:
             print("not classified distance calc type")
-        Dis_list.append((genre_bucket, distance))
+        Dis_list.append((bucket, distance))
 
     # Sort by distance
     Dis_list.sort(key=lambda x: x[1])
 
     # Print the results
-    for genre, distance in Dis_list:
-        print(f"Genre: {genre}, Distance: {distance}")
+    for bucket, distance in Dis_list:
+        print(f"Bucket: {bucket}, Distance: {distance}")
 
-    # Find the closest genre
+    # Find the closest bucket
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
     if closest_distance[1]>max_distance:
