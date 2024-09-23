@@ -15,11 +15,13 @@ if Genre is None: # if the is no cache file
     em.start_cache(start_Genre) # add the starting elements to the cache so we have a base of buckets to start with
     Genre = em.get_cache(cache_file) # get the list of buckets from cache
 
+print("genre:", Genre)
+
 max_distance = 0.7
 
 input_genre = input("input genre: ")
 
-closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", num_binary_digits = 4)
+closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 4)
 print(closest_genre, bucket_binary_encoding)
 
 
