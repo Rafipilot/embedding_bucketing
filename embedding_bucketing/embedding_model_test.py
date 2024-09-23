@@ -15,10 +15,19 @@ def config(apikey):
 EMBEDDING_MODEL = "text-embedding-3-small"
 
 
-def init(cache_file):
+def init(cache_file, starting_buckets):
     global cache 
     cache = Cache(cache_file)
-    return cache
+    Bucket_array = get_cache(cache_file) # get the list of buckets from cache
+
+    if Bucket_array is None: # if the is no cache file
+        print("no file")
+        start_cache(starting_buckets) # add the starting elements to the cache so we have a base of buckets to start with
+        Bucket_array = get_cache(cache_file) # get the list of buckets from cache
+
+
+
+    return cache, Bucket_array
 
 def get_embedding(input_to_model):
     response = client.embeddings.create(
@@ -75,6 +84,7 @@ def get_cache(cache_file):
     if os.path.exists(cache_file):
         with open(cache_file, 'r') as f:
             cache_data = json.load(f)
+            cache_data
             buckets = cache_data.get("buckets", {})
             array = list(buckets.keys())
         print(f"Cache loaded from {cache_file}")
@@ -108,7 +118,6 @@ def start_cache(starting_array):
 def adjust(word, word2): # Here we are finding the average of the 2 embedding vectors and replacing the old vectors with the new ones
     #word = get_embedding(word)
     new_vec =  cache.adjusting_vectors(get_embedding(word), get_embedding(word2)) # find the average
-    print("old vec:", word2) 
     cache.write_to_cache(word2, new_vec) # writing new vector to the cache
 
 def nearest_word_E_D(word1, word2):  # functio to get the distance between to words using euclidean distance
@@ -117,7 +126,6 @@ def nearest_word_E_D(word1, word2):  # functio to get the distance between to wo
     #word2 = cache.read_from_cache(word2)
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-        print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
         word1_e = cache.read_from_cache(word1)
 
@@ -141,7 +149,6 @@ def averaging_and_compare(word1, word2):  # in progress
 
     if word1_e is None:
         word1_e = np.array(get_embedding(word1))
-        print("l", word1_e)
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
     
 
@@ -150,7 +157,6 @@ def averaging_and_compare(word1, word2):  # in progress
     word1_e = normalize(word1_e)
 
     word2 = normalize(word2)
-    print(word1_e)
     #word1_e = word1_e.reshape(1, -1)  # Reshape to (1, n_features)
     #word2 = word2.reshape(1, -1)  # Reshape to (1, n_features)
 
@@ -163,14 +169,10 @@ def averaging_and_compare(word1, word2):  # in progress
 
 def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
-    print("bucket array:, ", bucket_array)
     for genre_bucket in bucket_array:
-        print(genre_bucket)
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":
-            print(genre_bucket, word)
             distance = nearest_word_E_D(genre_bucket, word)
         if type_of_distance_calc.upper() == "COSINE SIMILARITY":
-            print(genre_bucket, word)
             distance = nearest_word(genre_bucket, word)
         else:
             print("not classified distance calc type")
@@ -199,6 +201,12 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     return closest_distance, closest_bucket, bucket_id, bucket_binary
 
 
+def adjusting_vectors(self, vec1, vec2):
+    """Average two embedding vectors."""
+    array1_np = np.array(vec1)
+    array2_np = np.array(vec2)
+    adjusted_embedding = (array1_np + array2_np) / 2
+    return adjusted_embedding
 
 
 
@@ -248,8 +256,7 @@ class Cache:
             return self.cache[key]["embedding"]
         else:
             return None
-
-
+    
     def save_cache(self):
         """Save the cache and next_id to a file."""
         data_to_save = {
@@ -281,12 +288,7 @@ class Cache:
 
 
 
-    def adjusting_vectors(self, vec1, vec2):
-        """Average two embedding vectors."""
-        array1_np = np.array(vec1)
-        array2_np = np.array(vec2)
-        adjusted_embedding = (array1_np + array2_np) / 2
-        return adjusted_embedding
+
 
 
 
