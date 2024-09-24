@@ -115,39 +115,35 @@ Returns array of the existing cache file and returns none if it does not exist.
 Writes to the cache the starting array of buckets. e.g if you didnt have any buckets to read from the cache you would call this function and pass through a array of buckets to write to the cache.
 12
 ```bash
-   auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc) 
+   auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits) 
   ```
 Max Distance: max distance between the closest bucket and the input word
 
+Amount_of_binary_digits: the amount of binary digits to return the bucket in 
+(Note: if you have an insufficent amount of binary digits an error message will be prinited and the bucket will not be encoded into binary)
+
 Type of Distance calc must be either "EUCLIDEAN DISTANCE" or "COSINE_SIMILARITY" if input is not valid then auto uses euclidean distance
 
-Returns the closest distance and the closest bucket
+Returns the closest distance, closest bucket, unique bucket ID and the unique bucket binary encoding in the amount of digits specified
 
 
 ## Caching system
-The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs.
+The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs. Also the cache stores a unqiue numerical id per bucket so we can easily convert it into the relevent amount of binary digits.
 
 ## Example Usage
 #### Comparing an input genre to an array of genres and returning the most semantically similar one
 ```shell
 import embedding_buckting.embedding_model_test as em  # importing relevent modules
 
-em.config(openai) # setting up the module, here you pass your personal Openai api key through
-
+em.config("Your personal api key") # setting up the module, here you pass your personal Openai api key through
 cache_file_name="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
-cache = em.init(cache_file_name) # initializing your cache file with name cache_file
 
 start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
-
-Genre = em.get_cache(cache_file) # get the list of buckets from cache  
-if Genre is None: # if the is no cache file
-    print("no file")
-    em.start_cache(start_Genre) # add the starting array to the cache so we have a base of buckets to start with Note: this automatically saves the embeddings with the associated word
-    Genre = em.get_cache(cache_file) # get the list of buckets from cache now that we have added the starting array of buckets
+cache, Genre = em.init(cache_file, start_Genre) # init cache return cache object and the array of buckets, in this case genres
 
 input_genre = input("Input a genre: ")
+max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
 
-max_distance = 0.7 # max distance a word can be from the closest bucket before we create a new bucket
 closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
 print(closest_genre) # printing the closest bucket's name
 ```
