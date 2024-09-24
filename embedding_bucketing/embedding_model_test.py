@@ -25,9 +25,8 @@ def init(cache_file, starting_buckets):
         start_cache(starting_buckets) # add the starting elements to the cache so we have a base of buckets to start with
         Bucket_array = get_cache(cache_file) # get the list of buckets from cache
 
-
-
     return cache, Bucket_array
+
 
 def get_embedding(input_to_model):
     response = client.embeddings.create(
@@ -101,6 +100,7 @@ def llm_call(input_message): #llm call method
     local_response = response.choices[0].message.content
     return local_response
 
+
 def start_cache(starting_array):
     for item in starting_array:
         if cache.read_from_cache(item) is None:
@@ -109,7 +109,7 @@ def start_cache(starting_array):
         else:
             print(f"{item} already exists in cache with ID {cache.get_id(item)}")
 
- 
+
 def adjust(word, word2): # Here we are finding the average of the 2 embedding vectors and replacing the old vectors with the new ones
     #word = get_embedding(word)
     new_vec =  cache.adjusting_vectors(get_embedding(word), get_embedding(word2)) # find the average
@@ -184,10 +184,13 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
     if closest_distance[1]>max_distance:
-        
-        print("Making New Bucket!")
-        new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
-        closest_bucket = word
+        print("c", cache.next_id, amount_of_binary_digits*amount_of_binary_digits)
+        if cache.next_id > (amount_of_binary_digits*amount_of_binary_digits):
+            print("Unable to make new bucket due to insufficent amount of binary digits")
+        else:
+            print("Making New Bucket!")
+            new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
+            closest_bucket = word
 
     bucket_id = cache.get_id(closest_bucket)
     num_binary_digits = amount_of_binary_digits
