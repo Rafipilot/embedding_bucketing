@@ -139,10 +139,10 @@ em.config("Your personal api key") # setting up the module, here you pass your p
 cache_file_name="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
 
 start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
-cache, Genre = em.init(cache_file, start_Genre)
+cache, Genre = em.init(cache_file, start_Genre) # init cache return cache object and the array of buckets, in this case genres
 
 input_genre = input("Input a genre: ")
-max_distance = 0.7 # max distance a word can be from the closest bucket before we create a new bucket
+max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
 
 closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
 print(closest_genre) # printing the closest bucket's name
