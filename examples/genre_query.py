@@ -8,7 +8,7 @@ cache, Genre = em.init(cache_file, start_Genre)
 
 print("Buckets:", Genre)
 
-max_distance = 0.5
+max_distance = 0.55
 input_genre = input("input genre: ")
 
 closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)
