@@ -218,11 +218,11 @@ class Cache:
         self.next_id = 1 # setting the next id to 1 at the start
         self.load_cache()
 
-    def write_to_cache(self, key, embedding, assign_id=True):
+    def write_to_cache(self, key, embedding, assign_id=True):  # optional to assign id
         """Store data in the cache with a given key and optional ID assignment."""
         if assign_id:
             current_id = self.next_id
-            self.next_id += 1
+            self.next_id += 1  # incremntng the next id so that the the next id is unique
         else:
             current_id = self.cache[key]['id'] if key in self.cache else None
 
