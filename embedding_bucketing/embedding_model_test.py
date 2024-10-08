@@ -165,7 +165,7 @@ def averaging_and_compare(word1, word2):  # in progress
 def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
     for bucket in bucket_array:
-        if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":
+        if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":    ## this was not working, please debug; when "EUCLIDEAN DISTANCE" is set, the else statement always prints
             distance = nearest_word_E_D(bucket, word)
         if type_of_distance_calc.upper() == "COSINE SIMILARITY":
             distance = nearest_word(bucket, word)
@@ -184,9 +184,9 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
     if closest_distance[1]>max_distance:
-        print("c", cache.next_id, amount_of_binary_digits*amount_of_binary_digits)
+        print("c", cache.next_id, amount_of_binary_digits*amount_of_binary_digits)  ## why is this print statement here? Please remove extraneous print statements as we get closer to using/publishing this
         if cache.next_id > (amount_of_binary_digits*amount_of_binary_digits):
-            print("Unable to make new bucket due to insufficent amount of binary digits")
+            print("Unable to make new bucket due to insufficient amount of binary digits")
         else:
             print("Making New Bucket!")
             new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
@@ -215,14 +215,18 @@ class Cache:
     def __init__(self, cache_file):
         self.cache = {}
         self.cache_file = cache_file
-        self.next_id = 1 # setting the next id to 1 at the start
+        self.next_id = 0 # setting the next id to 0 at the start
         self.load_cache()
 
-    def write_to_cache(self, key, embedding, assign_id=True):
+        ## add attributes / methods for
+        # self.bucket_list
+        # self.bucket_list_ids
+
+    def write_to_cache(self, key, embedding, assign_id=True):  # optional to assign id
         """Store data in the cache with a given key and optional ID assignment."""
         if assign_id:
             current_id = self.next_id
-            self.next_id += 1
+            self.next_id += 1  # incrementing the next id so that the the next id is unique
         else:
             current_id = self.cache[key]['id'] if key in self.cache else None
 
@@ -284,10 +288,3 @@ class Cache:
         if os.path.exists(self.cache_file):
             os.remove(self.cache_file)
         print("Cache cleared and cache file deleted.")
-
-
-
-
-
-
-

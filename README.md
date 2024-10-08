@@ -46,7 +46,7 @@ The program supports blending the meaning of buckets by averaging their embeddin
 
 ## Documentation
 
-#### Note: use ```import embedding_buckting.embedding_model_test``` to get the model
+#### Note: use ```import embedding_bucketing.embedding_model_test``` to get the model
 
 1.
 ```bash
