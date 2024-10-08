@@ -74,7 +74,7 @@ def new_bucket(name):
     cache.write_to_cache(name, embedding, assign_id=True)  # Assign a unique ID
 
 
-def get_cache(cache_file):
+def get_cache(cache_file): 
     array = []
     if os.path.exists(cache_file):
         with open(cache_file, 'r') as f:
