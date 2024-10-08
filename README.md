@@ -25,23 +25,27 @@ Cosine Similarity, Euclidean Distance + more coming
 ### 5. Averaging of Embeddings:
 Allows for blending the meanings of two words by averaging their embeddings and storing the result.
 
-## How it Works
+## How to use it
+##### Example for recommender systems where llm extracts the genre input
 
-### 1. Word Embeddings
-The program queries OpenAI's API to generate word embeddings for any given word or phrase. These embeddings are then compared using various metrics such as cosine similarity or Euclidean distance.
+#### 1. Configure the model
+Since we are using openai's embedding model encode words into embedding vectors we need to pass our openai api key through the config() function to configure the openai client.
 
-### 2. Nearest Word
-The nearest_word() function compares two words and finds the semantic distance between them, using cosine similarity. The lower the distance, the more similar the words are.
+#### 2. Load cache, or make one if we don't have one
+To load or create our cache file we need to use the init() function and pass through our file name and our array of starting genre buckets( for if we need to start up the cache). This function returns the cache and the buckets, in this case different genres.
 
-### 3. New Buckets
-New categories or "buckets" can be created with the new_bucket() function. Each bucket represents a word whose embedding is stored in the cache.
+#### 3. We are ready to go!
+Use the autosort function to get: 
+   1. Closest distance to the closest genre
+   2. Closest genre
+   3. The genre's unqiue ID
+   4. The genre's unique binary encoding
 
-### 4. Caching System
-Embeddings are saved in a cache file (in JSON format) to prevent redundant API calls. This improves performance by allowing for quick lookups of word embeddings from the cache when they have already been generated.
-
-### 5. Averaging Embeddings
-The program supports blending the meaning of buckets by averaging their embeddings using the adjust() function, which can then be stored in the cache for future use.
-
+By passing through:
+   1. Input genre
+   2. Max distance before new bucket creation
+   3. Type of distance calculation
+   4. The amount of binary digits you want the unique numerical id to be encoded in
 
 
 ## Documentation
@@ -141,10 +145,10 @@ cache_file_name="cache_genre.json"  # name of the cache file to save the embeddi
 start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
 cache, Genre = em.init(cache_file, start_Genre) # init cache return cache object and the array of buckets, in this case genres
 
-input_genre = input("Input a genre: ")
+input_genre = input("Input a genre: ") #User input
 max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
 
-closest_distance, closest_genre = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="EUCLIDEAN DISTANCE") one  # using autosort to get the closest distance and closest bucket
+closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)  # using autosort 
 print(closest_genre) # printing the closest bucket's name
 ```
 Look at our examples file in our repo to get a better idea of how it works in practice!
