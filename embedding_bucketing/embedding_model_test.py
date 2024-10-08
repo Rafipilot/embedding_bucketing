@@ -167,7 +167,7 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     for bucket in bucket_array:
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":    ## this was not working, please debug; when "EUCLIDEAN DISTANCE" is set, the else statement always prints
             distance = nearest_word_E_D(bucket, word)
-        if type_of_distance_calc.upper() == "COSINE SIMILARITY":
+        elif type_of_distance_calc.upper() == "COSINE SIMILARITY":
             distance = nearest_word(bucket, word)
         else:
             print("not classified distance calc type")
