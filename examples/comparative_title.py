@@ -1,17 +1,17 @@
 import embedding_bucketing.embedding_model_test as em
-
-from config import openai
-
+from config import openai  
 em.config(openai)
 
-starting_comparitive_title_buckets = ["romeo and julliet", "the great gatsby", "harry potter", "oliver twist", "an inspector calls" ]
-
 cache_file="cache_comparititve_title.json"
-cache, comparitive_title_buckets = em.init(cache_file, starting_comparitive_title_buckets)
+starting_comparitive_title_buckets = ["romeo and julliet", "the great gatsby", "harry potter", "oliver twist", "an inspector calls" ]
+cache, titles = em.init(cache_file, starting_comparitive_title_buckets)
+
+print("Buckets:", titles)
 
 max_distance = 0.55
-user_input = input("enter title:")
+inputs = ["Beauty and the beast", "The red october", "the big short"]
 
-closest_dis, closest_bucket, ID, encoding=  em.auto_sort(user_input, max_distance, starting_comparitive_title_buckets, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits=6)
+for i in range(len(inputs)):
+    closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(inputs[i], max_distance, titles, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)
 
-print(closest_bucket, encoding)
+    print("Encoded: ", inputs[i], "into", "Bucket:", closest_genre, "With binary encoding", bucket_binary_encoding)

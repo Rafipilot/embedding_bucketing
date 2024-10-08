@@ -177,14 +177,14 @@ def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of
     Dis_list.sort(key=lambda x: x[1])
 
     # Print the results
-    for bucket, distance in Dis_list:
-        print(f"Bucket: {bucket}, Distance: {distance}")
+    #for bucket, distance in Dis_list:
+    #    print(f"Bucket: {bucket}, Distance: {distance}")
+
 
     # Find the closest bucket
     closest_distance = Dis_list[0]
     closest_bucket  = Dis_list[0][0]
     if closest_distance[1]>max_distance:
-        print("c", cache.next_id, amount_of_binary_digits*amount_of_binary_digits)  ## why is this print statement here? Please remove extraneous print statements as we get closer to using/publishing this
         if cache.next_id > (amount_of_binary_digits*amount_of_binary_digits):
             print("Unable to make new bucket due to insufficient amount of binary digits")
         else:
