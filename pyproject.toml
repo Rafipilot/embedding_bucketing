@@ -1,5 +1,5 @@
 [project]
-name = "embedding_buckting"
+name = "embedding_bucketing"
 version = "0.1.0"
 license = {file = "LICENSE.txt"}
 dependencies = [
@@ -10,7 +10,7 @@ dependencies = [
 authors = [
   { name="Rafayel Latif", email="Rafayel.latif@gmail.com" }
 ]
-description = "embedding_buckting"
+description = "embedding_bucketing"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
