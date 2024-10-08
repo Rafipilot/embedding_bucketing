@@ -57,9 +57,9 @@ You need to pass your Openai api key through to the config function to setup the
 
 2.
  ```bash
-   init(cache_file_name)
+   init(cache_file_name, starting_bucket_array)
   ```
-Initializes the cache system by loading the cache from a file or creating a new one.
+Initializes the cache system by loading the cache from a file or creating a new one, if one does not exist, by using the "starting_bucket_array" as buckets to use initally.
 
 3.
  ```bash
@@ -83,7 +83,7 @@ Compares two words using Euclidean distance and returns the semantic distance be
  ```bash
    new_bucket(name)
   ```
-Creates a new word bucket by generating the embedding of the word and saving it to the cache.
+Creates a new word bucket by generating the embedding of the word and saving it to the cache and assigns it a unique numerical id.
 
 7.
  ```bash
