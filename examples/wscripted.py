@@ -3,11 +3,17 @@
 
 # import embedding bucketing; to install from the repo: pip install git+https://github.com/Rafipilot/embedding_bucketing
 import embedding_bucketing.embedding_model_test as em
-
+import numpy as np
 # you'll need an OpenAPI key
 from config import openai  
 em.config(openai)
 
+#Constants
+max_distance = 0.55 # max distance a word can be from the closest bucket before we create a new bucket
+type_of_distance_calc="COSINE SIMILARITY" # another option to try is "EUCLIDEAN DISTANCE"   
+amount_of_binary_digits= 10 #Amount of binary digits for the bucket to be encoded into e.g if it is 5 Romance may be 10010 for example
+
+#Function to get the closest bucket and its binary encoding
 def embedding_bucketing_response(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits):
     sort_response = em.auto_sort(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits) 
 
@@ -18,14 +24,7 @@ def embedding_bucketing_response(uncategorized_input, max_distance, bucket_list,
     return closest_bucket, bucket_binary # returning the closest bucket and its binary encoding
 
 
-max_distance = 0.55 # max distance a word can be from the closest bucket before we create a new bucket
-type_of_distance_calc="COSINE SIMILARITY" # another option to try is "EUCLIDEAN DISTANCE"   ### print statements for "EUCLIDEAN DISTANCE" is broken
-amount_of_binary_digits= 10
 
-
-
-
-# If you have an existing list of categories, list them here
 starting_genre_buckets= ["Comedy", "Drama", "Action"]
 cache_file_name = "cache_genre.json"  # will be saved or loaded from your current working directory
 cache, genre_buckets = em.init(cache_file_name, starting_genre_buckets)
@@ -66,6 +65,8 @@ for i in range(len(uncategorized_comparative_input)):
 
 
 print("Inputs Closest to:", closest_genre, closest_theme, "Closest comparative titles: ", closest_comparative_title_buckets)
+
+
 
 ao_input_binary_array = theme_encoding+genre_encoding+comparative_title_encodings
 print("ao binary input:", theme_encoding, genre_encoding, comparative_title_encodings)
