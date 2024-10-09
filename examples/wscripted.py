@@ -5,30 +5,80 @@
 import embedding_bucketing.embedding_model_test as em
 
 # you'll need an OpenAPI key
-from .config import apikey
-em.config(apikey)
+from config import openai  
+em.config(openai)
 
-# If you have an existing list of categories, list them here
-starting_buckets= ["Comedy", "Drama", "Action"]
+def embedding_bucketing_response(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits):
+    sort_response = em.auto_sort(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits) 
 
-# Initialize or load cache
-cache_file_name = "DEMO_CACHE.json"  # will be saved or loaded from your current working directory
-cache, bucket_list = em.init(cache_file_name, starting_buckets)
+    closest_distance = sort_response[0]
+    closest_bucket   = sort_response[1]  # which bucket the uncategorized_input was placed in
+    bucket_id        = sort_response[2]  # the id of the closest_bucket
+    bucket_binary    = sort_response[3]  # binary representation of the id for INPUT into api.aolabs.ai
+    return closest_bucket, bucket_binary # returning the closest bucket and its binary encoding
 
-# Use em.auto_sort to get the closest distance and closest bucket
-uncategorized_input  = "Documentary"
-max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
+
+max_distance = 0.55 # max distance a word can be from the closest bucket before we create a new bucket
 type_of_distance_calc="COSINE SIMILARITY" # another option to try is "EUCLIDEAN DISTANCE"   ### print statements for "EUCLIDEAN DISTANCE" is broken
 amount_of_binary_digits= 10
 
-sort_response = em.auto_sort(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits) 
 
-closest_distance = sort_response[0]
-closest_bucket   = sort_response[1]  # which bucket the uncategorized_input was placed in
-bucket_id        = sort_response[2]  # the id of the closest_bucket
-bucket_binary    = sort_response[3]  # binary representation of the id for INPUT into api.aolabs.ai
 
-INPUT_AO_api = ''.join(map(str, bucket_binary))  # right now, our API accepts only binary strings as input
+
+# If you have an existing list of categories, list them here
+starting_genre_buckets= ["Comedy", "Drama", "Action"]
+cache_file_name = "Genre_CACHE.json"  # will be saved or loaded from your current working directory
+cache, genre_buckets = em.init(cache_file_name, starting_genre_buckets)
+uncategorized_genre_input  = "Documentary"
+
+#Call for genre
+closest_genre, genre_encoding = embedding_bucketing_response(uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
+
+
+
+
+
+cache_file_theme="cache_theme.json"
+start_theme = ["Love", "Sacrifice", "Sad", "Death", "Dark"]
+cache_theme, theme_buckets = em.init(cache_file_theme, start_theme)
+uncategorized_theme_input = "Romance"
+
+closest_theme, theme_encoding = embedding_bucketing_response(uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
+
+
+
+
+"""
+cache_file_comp="cache_comparititve_title.json"
+starting_comparitive_title_buckets = ["romeo and julliet", "the great gatsby", "harry potter", "oliver twist", "an inspector calls" ]
+cache_comp, comparative_title_buckets = em.init(cache_file_comp, starting_comparitive_title_buckets)
+
+# Use em.auto_sort to get the closest distance and closest bucket
+
+uncategorized_comparative_input = ["Beauty and the beast", "The red october", "the big short"]
+
+
+#Call for genre
+closest_genre, genre_encoding = embedding_bucketing_response(uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
+
+#Call for theme title
+closest_genre, theme_encoding = embedding_bucketing_response(uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
+
+#Call for comparative title
+for i in range(len(comparative_title_buckets)):
+    closest_comp_bucket, comparative_title_encoding = embedding_bucketing_response(uncategorized_comparative_input[i-1], max_distance, comparative_title_buckets, type_of_distance_calc, amount_of_binary_digits)
+
+    print("Encoded: ", comparative_title_buckets[i-1], "into", "Bucket:", closest_comp_bucket, "With binary encoding", comparative_title_encoding)
+
+
+"""
+
+print("Inputs Closest to:", closest_genre, closest_theme)
+
+ao_input_binary_array = theme_encoding+genre_encoding
+print("input to ao:",ao_input_binary_array)
+
+INPUT_AO_api = ''.join(map(str,ao_input_binary_array))  # right now, our API accepts only binary strings as input
 
 FULL_INPUT_AO_api = INPUT_AO_api + INPUT_AO_api + INPUT_AO_api
 
