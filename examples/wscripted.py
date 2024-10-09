@@ -27,13 +27,12 @@ amount_of_binary_digits= 10
 
 # If you have an existing list of categories, list them here
 starting_genre_buckets= ["Comedy", "Drama", "Action"]
-cache_file_name = "Genre_CACHE.json"  # will be saved or loaded from your current working directory
+cache_file_name = "cache_genre.json"  # will be saved or loaded from your current working directory
 cache, genre_buckets = em.init(cache_file_name, starting_genre_buckets)
 uncategorized_genre_input  = "Documentary"
-
 #Call for genre
 closest_genre, genre_encoding = embedding_bucketing_response(uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
-
+print("Closest Genre to", uncategorized_genre_input, "is", closest_genre)
 
 
 
@@ -42,40 +41,34 @@ cache_file_theme="cache_theme.json"
 start_theme = ["Love", "Sacrifice", "Sad", "Death", "Dark"]
 cache_theme, theme_buckets = em.init(cache_file_theme, start_theme)
 uncategorized_theme_input = "Romance"
-
+# Call for theme
 closest_theme, theme_encoding = embedding_bucketing_response(uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
+print("closest theme to", uncategorized_theme_input, "is", closest_theme)
 
 
 
 
-"""
 cache_file_comp="cache_comparititve_title.json"
 starting_comparitive_title_buckets = ["romeo and julliet", "the great gatsby", "harry potter", "oliver twist", "an inspector calls" ]
 cache_comp, comparative_title_buckets = em.init(cache_file_comp, starting_comparitive_title_buckets)
-
-# Use em.auto_sort to get the closest distance and closest bucket
-
 uncategorized_comparative_input = ["Beauty and the beast", "The red october", "the big short"]
 
-
-#Call for genre
-closest_genre, genre_encoding = embedding_bucketing_response(uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
-
-#Call for theme title
-closest_genre, theme_encoding = embedding_bucketing_response(uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
-
-#Call for comparative title
-for i in range(len(comparative_title_buckets)):
-    closest_comp_bucket, comparative_title_encoding = embedding_bucketing_response(uncategorized_comparative_input[i-1], max_distance, comparative_title_buckets, type_of_distance_calc, amount_of_binary_digits)
-
-    print("Encoded: ", comparative_title_buckets[i-1], "into", "Bucket:", closest_comp_bucket, "With binary encoding", comparative_title_encoding)
+#Call for comparative title#
+comparative_title_encodings = []
+closest_comparative_title_buckets= []
+for i in range(len(uncategorized_comparative_input)):
+    closest_comp_bucket, comparative_title_encoding = embedding_bucketing_response(uncategorized_comparative_input[i], max_distance, comparative_title_buckets, type_of_distance_calc, amount_of_binary_digits)
+    comparative_title_encodings.append(comparative_title_encoding)
+    closest_comparative_title_buckets.append(closest_comp_bucket)
+    print("Encoded: ", uncategorized_comparative_input[i], "into", "Bucket:", closest_comp_bucket, "With binary encoding", comparative_title_encoding)
 
 
-"""
 
-print("Inputs Closest to:", closest_genre, closest_theme)
 
-ao_input_binary_array = theme_encoding+genre_encoding
+print("Inputs Closest to:", closest_genre, closest_theme, "Closest comparative titles: ", closest_comparative_title_buckets)
+
+ao_input_binary_array = theme_encoding+genre_encoding+comparative_title_encodings
+print("ao binary input:", theme_encoding, genre_encoding, comparative_title_encodings)
 print("input to ao:",ao_input_binary_array)
 
 INPUT_AO_api = ''.join(map(str,ao_input_binary_array))  # right now, our API accepts only binary strings as input
