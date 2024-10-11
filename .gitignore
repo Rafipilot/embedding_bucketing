@@ -12,7 +12,7 @@ config.py
 #caches
 cache_theme.json
 cache_genre.json
-cache_comparititve_title.json
+cache_comparatitve_title.json
 
 
 embedding_buckting.egg-info/
