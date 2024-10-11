@@ -83,7 +83,7 @@ print("input to ao: ", INPUT_AO_api)
 
 # Run this API call once to configure your agents
 
-# WScripted Agent Architecture 
+# Wscripted Agent Architecture 
 # https://gist.github.com/mi3law/612f7cc6b9cbe96ba7304bad16931087
 
 import requests
@@ -91,9 +91,9 @@ import requests
 url = "https://api.aolabs.ai/v0dev/kennel"
 
 payload = {
-    "kennel_name": "WScripted_Curator",
+    "kennel_name": "Wscripted_Curator",
     "arch_URL": "https://gist.githubusercontent.com/mi3law/612f7cc6b9cbe96ba7304bad16931087/raw/5ea3b07f89a2b5eeacbc7045f841a8d48df0346a/arch__WScripted_Curator.py",
-    "description": "WScripted- Personal Curation Agent.  Takes in Genre, Theme, and Comparative Title (10 binary neurons each) for a piece of content to offer the user a recommendation, learning from subsequent individual user interaction.",
+    "description": "Wscripted- Personal Curation Agent.  Takes in Genre, Theme, and Comparative Title (10 binary neurons each) for a piece of content to offer the user a recommendation, learning from subsequent individual user interaction.",
     "permissions": "private"
 }
 headers = {
@@ -116,7 +116,7 @@ import requests
 url = "https://api.aolabs.ai/v0dev/kennel/agent"
 
 payload = {
-    "kennel_id": "WScripted_Curator",  # use kennel_name entered above
+    "kennel_id": "Wscripted_Curator",  # use kennel_name entered above
     "agent_id": "1st_USER_ID",   # enter unique user IDs here, to call a unique agent for each ID
     "INPUT": INPUT_AO_api,  # pass through the input from embedding_bucketing.auto_sort, adding any other inputs
     "control": {
