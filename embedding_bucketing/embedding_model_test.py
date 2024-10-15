@@ -16,7 +16,7 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 
 
 def init(cache_file, starting_buckets):
-    global cache 
+    # global cache -- this big no-no, I should have caught this earlier, my bad
     cache = Cache(cache_file)
     Bucket_array = get_cache(cache_file) # get the list of buckets from cache
 
@@ -43,7 +43,7 @@ def normalize(embedding): # inbuilt
 
 
 # Function to find the nearest word by comparing distances
-def nearest_word(word1, word2):  # embedding method
+def nearest_word(cache, word1, word2):  # embedding method
     # Get embeddings for both words
     word1_e = cache.get_embedding_from_cache(word1) # get the embedding vector from cache
     #word2 = cache.read_from_cache(word2)
@@ -69,7 +69,7 @@ def nearest_word(word1, word2):  # embedding method
     return distance
 
 
-def new_bucket(name):
+def new_bucket(cache, name):
     embedding = get_embedding(name)  # Get embedding for the new bucket
     cache.write_to_cache(name, embedding, assign_id=True)  # Assign a unique ID
 
@@ -79,7 +79,7 @@ def get_cache(cache_file):
     if os.path.exists(cache_file):
         with open(cache_file, 'r') as f:
             cache_data = json.load(f)
-            cache_data
+            # cache_data-- why is this here?
             buckets = cache_data.get("buckets", {})
             array = list(buckets.keys())
         return array
@@ -101,7 +101,7 @@ def llm_call(input_message): #llm call method
     return local_response
 
 
-def start_cache(starting_array):
+def start_cache(cache, starting_array):
     for item in starting_array:
         if cache.read_from_cache(item) is None:
             embedding = get_embedding(item)
@@ -110,12 +110,12 @@ def start_cache(starting_array):
             print(f"{item} already exists in cache with ID {cache.get_id(item)}")
 
 
-def adjust(word, word2): # Here we are finding the average of the 2 embedding vectors and replacing the old vectors with the new ones
+def adjust(cache, word, word2): # Here we are finding the average of the 2 embedding vectors and replacing the old vectors with the new ones
     #word = get_embedding(word)
     new_vec =  cache.adjusting_vectors(get_embedding(word), get_embedding(word2)) # find the average
     cache.write_to_cache(word2, new_vec) # writing new vector to the cache
 
-def nearest_word_E_D(word1, word2):  # functio to get the distance between to words using euclidean distance
+def nearest_word_E_D(cache, word1, word2):  # function to get the distance between to words using euclidean distance
     # Get embeddings for both words
     word1_e = cache.read_from_cache(word1) # get the embedding vector from cache
     #word2 = cache.read_from_cache(word2)
@@ -139,7 +139,7 @@ def nearest_word_E_D(word1, word2):  # functio to get the distance between to wo
 
     return distance
 
-def averaging_and_compare(word1, word2):  # in progress
+def averaging_and_compare(cache, word1, word2):  # in progress
     word1_e = cache.read_from_cache(word1)
 
     if word1_e is None:
@@ -162,7 +162,7 @@ def averaging_and_compare(word1, word2):  # in progress
     return distance
 
 
-def auto_sort(word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
+def auto_sort(cache, word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
     for bucket in bucket_array:
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":    ## this was not working, please debug; when "EUCLIDEAN DISTANCE" is set, the else statement always prints
