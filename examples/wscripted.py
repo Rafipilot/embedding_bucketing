@@ -3,8 +3,8 @@
 
 import embedding_bucketing.embedding_model_test as em # pip install git+https://github.com/Rafipilot/embedding_bucketing
 import numpy as np
-from config import openai_api_key  # you'll need an OpenAPI key
-em.config(openai_api_key)
+from config import openai_key  # you'll need an OpenAPI key
+em.config(openai_key)
 
 
 # Constants
@@ -13,8 +13,8 @@ type_of_distance_calc="COSINE SIMILARITY" # another option to try is "EUCLIDEAN 
 amount_of_binary_digits= 10 # amount of binary digits for the bucket to be encoded into; e.g if "Romance" has bucket id 5, its binary representation would be 0000000101
 
 # Function to get the closest bucket and its binary encoding
-def embedding_bucketing_response(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits):
-    sort_response = em.auto_sort(uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits) 
+def embedding_bucketing_response(cache, uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits):
+    sort_response = em.auto_sort(cache, uncategorized_input, max_distance, bucket_list, type_of_distance_calc, amount_of_binary_digits) 
 
     closest_distance = sort_response[0]
     closest_bucket   = sort_response[1]  # which bucket the uncategorized_input was placed in
@@ -27,11 +27,11 @@ def embedding_bucketing_response(uncategorized_input, max_distance, bucket_list,
 ## GENRE
 starting_genre_buckets= ["Comedy", "Drama", "Action"] # if you have an existing list of categories, list them here
 cache_file_name = "cache_genre.json"  # will be saved or loaded from your current working directory
-cache, genre_buckets = em.init(cache_file_name, starting_genre_buckets)
+cache_genre, genre_buckets = em.init(cache_file_name, starting_genre_buckets)
 uncategorized_genre_input  = "Documentary"
 
 # Call for genre
-closest_genre, genre_encoding = embedding_bucketing_response(uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
+closest_genre, genre_encoding = embedding_bucketing_response(cache_genre, uncategorized_genre_input, max_distance, genre_buckets, type_of_distance_calc, amount_of_binary_digits)
 print("Closest Genre to: ", uncategorized_genre_input, "is", closest_genre)
 
 
@@ -42,21 +42,21 @@ cache_theme, theme_buckets = em.init(cache_file_theme, start_theme)
 uncategorized_theme_input = "Romance"
 
 # Call for theme
-closest_theme, theme_encoding = embedding_bucketing_response(uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
+closest_theme, theme_encoding = embedding_bucketing_response(cache_theme, uncategorized_theme_input, max_distance, theme_buckets, type_of_distance_calc, amount_of_binary_digits)
 print("closest theme to: ", uncategorized_theme_input, "is ", closest_theme)
 
 
 ## COMPARATIVE TITLE
 starting_comparative_title_buckets = ["romeo and juliet", "the great gatsby", "harry potter", "oliver twist", "an inspector calls" ]
 cache_file_comp="cache_comparative_title.json"
-cache_comp, comparative_title_buckets = em.init(cache_file_comp, starting_comparative_title_buckets)
+cache_comp, comparative_title_buckets = em.init(cache_file=cache_file_comp, starting_buckets=starting_comparative_title_buckets)
 uncategorized_comparative_input = ["beauty and the beast", "the red october", "the big short"]
 
 # Call for comparative title
 comparative_title_encodings = []
 closest_comparative_title_buckets= []
 for i in range(len(uncategorized_comparative_input)):
-    closest_comp_bucket, comparative_title_encoding = embedding_bucketing_response(uncategorized_comparative_input[i], max_distance, comparative_title_buckets, type_of_distance_calc, amount_of_binary_digits)
+    closest_comp_bucket, comparative_title_encoding = embedding_bucketing_response(cache_comp, uncategorized_comparative_input[i], max_distance, comparative_title_buckets, type_of_distance_calc, amount_of_binary_digits)
     closest_comparative_title_buckets = np.append(closest_comparative_title_buckets, closest_comp_bucket)
     comparative_title_encodings = np.append(comparative_title_encodings, comparative_title_encoding)
     print("Encoded: ", uncategorized_comparative_input[i], "into ", "Bucket: ", closest_comp_bucket, "With binary encoding: ", comparative_title_encoding)

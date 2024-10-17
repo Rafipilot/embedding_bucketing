@@ -22,9 +22,8 @@ def init(cache_file, starting_buckets):
 
     if Bucket_array is None: # if the is no cache file
         print("no file")
-        start_cache(starting_buckets) # add the starting elements to the cache so we have a base of buckets to start with
+        start_cache(cache, starting_buckets) # add the starting elements to the cache so we have a base of buckets to start with
         Bucket_array = get_cache(cache_file) # get the list of buckets from cache
-
     return cache, Bucket_array
 
 

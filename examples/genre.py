@@ -1,6 +1,6 @@
 import embedding_bucketing.embedding_model_test as em
-from config import openai  
-em.config(openai)
+from config import openai_key  
+em.config(openai_key)
 
 cache_file="cache_genre.json"
 start_Genre = ["Drama", "Comedy", "Action", "romance", "documentary"]
@@ -11,7 +11,7 @@ print("Buckets:", Genre)
 max_distance = 0.55
 input_genre = input("input genre: ")
 
-closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)
+closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(cache, input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)
 print("Bucket:", closest_genre, "  Binary encoding", bucket_binary_encoding)
 
 
