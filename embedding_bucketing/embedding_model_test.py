@@ -28,6 +28,7 @@ def init(cache_file, starting_buckets):
 
 
 def get_embedding(input_to_model):
+    print("calling openai")
     response = client.embeddings.create(
         input=input_to_model,
         model=EMBEDDING_MODEL
@@ -50,7 +51,7 @@ def nearest_word(cache, word1, word2):  # embedding method
         word1_e = np.array(get_embedding(word1))
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
 
-    word2 = np.array(get_embedding(word2))
+    word2 = np.array(word2)
 
 
     word1_e = normalize(word1_e)
@@ -123,7 +124,7 @@ def nearest_word_E_D(cache, word1, word2):  # function to get the distance betwe
         cache.write_to_cache(word1, np.array(get_embedding(word1)))
         word1_e = cache.read_from_cache(word1)
 
-    word2 = np.array(get_embedding(word2))
+    word2 = np.array(word2)
 
     word1_e = normalize(word1_e)
 
@@ -163,11 +164,12 @@ def averaging_and_compare(cache, word1, word2):  # in progress
 
 def auto_sort(cache, word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
+    input_word_embedding = get_embedding(word)
     for bucket in bucket_array:
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":    ## this was not working, please debug; when "EUCLIDEAN DISTANCE" is set, the else statement always prints
-            distance = nearest_word_E_D(cache, bucket, word)
+            distance = nearest_word_E_D(cache, bucket, input_word_embedding)
         elif type_of_distance_calc.upper() == "COSINE SIMILARITY":
-            distance = nearest_word(cache, bucket, word)
+            distance = nearest_word(cache, bucket, input_word_embedding)
         else:
             print("not classified distance calc type")
         Dis_list.append((bucket, distance))
