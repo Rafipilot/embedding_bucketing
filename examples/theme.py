@@ -1,19 +1,15 @@
 import embedding_bucketing.embedding_model_test as em
 from config import openai_key
 
-em.config(openai)
 
-cache_file="cache_theme.json"
+em.config(openai_key) # setting up the module, here you pass your personal Openai api key through
+cache_file_name="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
 
-start_theme = ["Love", "Sacrifice", "Sad", "Death", "Dark"]
+start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
+cache, Genre = em.init(cache_file_name, start_Genre) # init cache return cache object and the array of buckets, in this case genres
 
-cache, theme = em.init(cache_file, start_theme)
+input_genre = input("Input a genre: ") #User input
+max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
 
-print("Buckets:", theme)
-
-max_distance = 0.55
-input_theme = input("input theme: ")
-
-closest_distance, closest_theme, bucket_id, bucket_binary_encoding = em.auto_sort(cache, input_theme, max_distance, theme, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)
-print("Bucket:", closest_theme, "  Binary encoding", bucket_binary_encoding)
-
+closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(cache, input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)  # using autosort 
+print(closest_genre) # printing the closest bucket's name

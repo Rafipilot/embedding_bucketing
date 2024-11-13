@@ -190,7 +190,7 @@ def auto_sort(cache, word, max_distance, bucket_array, type_of_distance_calc, am
             print("Unable to make new bucket due to insufficient amount of binary digits")
         else:
             print("Making New Bucket Name:", word)
-            new_bucket(word) # make a new bucket for input word as closest distance is greater than max distance 
+            new_bucket(cache, word) # make a new bucket for input word as closest distance is greater than max distance 
             closest_bucket = word
 
     bucket_id = cache.get_id(closest_bucket)
