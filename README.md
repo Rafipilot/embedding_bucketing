@@ -1,154 +1,204 @@
-# Bucketing system 
+# Documentation for Text Embedding and Bucket Categorization System
 
 ## Overview
-This Python program enables users to compare words or phrases using semantic embeddings, powered by OpenAI's language models. It uses vector embeddings to compute distances between words based on their semantic meanings, allowing for tasks like finding the nearest word, averaging word embeddings, and comparing distances between words. The program also incorporates a caching system to store and retrieve word embeddings, making future comparisons faster and more efficient.
 
-The application of this program is ideal in cases where predefined/select outputs are required from variable inputs, such as in situations where a system needs to group or "bucket" words into similar categories based on their semantic similarity. 
+This Python module provides functionality for generating text embeddings using OpenAI's API, managing a cache of embeddings, and categorizing words into buckets based on distance metrics. The module supports both **cosine similarity** and **Euclidean distance** for comparing embeddings.
 
+---
 
-## Get set up: 
-```bash
-pip install git+https://github.com/Rafipilot/embedding_bucketing
-```
+## Dependencies
 
+Ensure the following Python libraries are installed before using this module:
 
-## Features
-### 1. Semantic Similarity:
-Uses OpenAI's embeddings to compute the semantic similarity or distance between words.
-### 2. Word Bucketing: 
-Groups words into predefined categories based on their similarity, useful when a system requires a limited set of outputs from many potential inputs.
-### 3. Cache System: 
+- `os` (built-in)
+- `json` (built-in)
+- `numpy`
+- `openai`
+- `sklearn.metrics.pairwise`
 
-Efficiently stores embeddings in a JSON cache file, reducing API calls and speeding up repeated computations.
-### 4. Support for Multiple Distance Metrics:
-Cosine Similarity, Euclidean Distance + more coming
-### 5. Averaging of Embeddings:
-Allows for blending the meanings of two words by averaging their embeddings and storing the result.
+---
 
-## How to use it
-##### Example for recommender systems where llm extracts the genre input
+## Configuration and Initialization
 
-#### 1. Configure the model
-Since we are using openai's embedding model encode words into embedding vectors we need to pass our openai api key through the config() function to configure the openai client.
+### `config(apikey)`
+Configures the OpenAI API client.
 
-#### 2. Load cache, or make one if we don't have one
-To load or create our cache file we need to use the init() function and pass through our file name and our array of starting genre buckets( for if we need to start up the cache). This function returns the cache and the buckets, in this case different genres.
+**Parameters:**
+- `apikey` (*str*): OpenAI API key.
 
-#### 3. We are ready to go!
-Use the autosort function to get: 
-   1. Closest distance to the closest genre
-   2. Closest genre
-   3. The genre's unqiue ID
-   4. The genre's unique binary encoding
+### `init(cache_file, starting_buckets)`
+Initializes the caching system and loads existing buckets.
 
-By passing through:
-   1. Input genre
-   2. Max distance before new bucket creation
-   3. Type of distance calculation
-   4. The amount of binary digits you want the unique numerical id to be encoded in
+**Parameters:**
+- `cache_file` (*str*): Path to the cache file.
+- `starting_buckets` (*list*): Initial words to be categorized into buckets.
 
+**Returns:**
+- `cache` (*Cache object*): Cache instance managing embeddings.
+- `bucket_array` (*list*): List of buckets.
 
-## Documentation
+---
 
-#### Note: use ```import embedding_bucketing.embedding_model_test``` to get the model
+## Embedding Functions
 
-1.
-```bash
-   config(apikey)
-```
-You need to pass your Openai api key through to the config function to setup the openai client.
+### `get_embedding(input_to_model)`
+Fetches the embedding of a given text input from OpenAI's API.
 
+**Parameters:**
+- `input_to_model` (*str*): Text input to generate embedding for.
 
-2.
- ```bash
-   init(cache_file_name, starting_bucket_array)
-  ```
-Initializes the cache system by loading the cache from a file or creating a new one, if one does not exist, by using the "starting_bucket_array" as buckets to use initally.
+**Returns:**
+- `embedding` (*list*): Embedding vector.
 
-3.
- ```bash
-   get_embedding(input_to_embedding_model)
-  ```
-Returns the embedding for a given word/phrase using OpenAI's embedding API.
+### `normalize(embedding)`
+Normalizes an embedding vector.
 
-4.
- ```bash
-   nearest_word(word1, word2)
-  ```
-Compares two words using their cosine similarity and returns the semantic distance between them.
+**Parameters:**
+- `embedding` (*numpy array*): Embedding vector.
 
-5.
- ```bash
-   nearest_word_E_D(word1, word2)
-  ```
-Compares two words using Euclidean distance and returns the semantic distance between their embeddings.
+**Returns:**
+- `normalized_embedding` (*numpy array*): Normalized vector.
 
-6.
- ```bash
-   new_bucket(name)
-  ```
-Creates a new word bucket by generating the embedding of the word and saving it to the cache and assigns it a unique numerical id.
+---
 
-7.
- ```bash
-   llm_call(input_message)
-  ```
-Makes a call to an LLM (e.g., GPT-3.5) to get a one-word answer based on the input and returns the output.
+## Distance Calculation
 
-8.
- ```bash
-   adjust(word, word2)
-  ```
-Averages the embeddings of two words and replaces the old vector of the second word with the new averaged vector in the cache but keeps the name the same.
+### `nearest_word(cache, word1, word2)`
+Finds the similarity between two words using **cosine similarity**.
 
-9 (not yet implemented). 
- ```bash
-   averaging_and_compare(word1, word2)
-  ```
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `word1` (*str*): First word.
+- `word2` (*str or numpy array*): Second word's embedding.
 
-10
-```bash
-    get_cache(cache_file_name)
-```
-Returns array of the existing cache file and returns none if it does not exist.
+**Returns:**
+- `distance` (*float*): Cosine distance between words.
 
-11.
- ```bash
-   start_cache(starting_array)
-```
-Writes to the cache the starting array of buckets. e.g if you didnt have any buckets to read from the cache you would call this function and pass through a array of buckets to write to the cache.
-12
-```bash
-   auto_sort(input_word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits) 
-  ```
-Max Distance: max distance between the closest bucket and the input word
+### `nearest_word_E_D(cache, word1, word2)`
+Calculates **Euclidean distance** between two words.
 
-Amount_of_binary_digits: the amount of binary digits to return the bucket in 
-(Note: if you have an insufficent amount of binary digits an error message will be prinited and the bucket will not be encoded into binary)
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `word1` (*str*): First word.
+- `word2` (*str or numpy array*): Second word's embedding.
 
-Type of Distance calc must be either "EUCLIDEAN DISTANCE" or "COSINE_SIMILARITY" if input is not valid then auto uses euclidean distance
+**Returns:**
+- `distance` (*float*): Euclidean distance between words.
 
-Returns the closest distance, closest bucket, unique bucket ID and the unique bucket binary encoding in the amount of digits specified
+---
 
+## Bucket Management
 
-## Caching system
-The caching feature speeds up the embedding lookup process. By saving previously generated embeddings, the program avoids redundant API calls to OpenAI, which reduces latency and API usage costs. Also the cache stores a unqiue numerical id per bucket so we can easily convert it into the relevent amount of binary digits.
+### `new_bucket(cache, name)`
+Creates a new bucket and stores its embedding in the cache.
 
-## Example Usage
-#### Comparing an input genre to an array of genres and returning the most semantically similar one
-```shell
-import embedding_buckting.embedding_model_test as em  # importing relevent modules
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `name` (*str*): Name of the bucket.
 
-em.config("Your personal api key") # setting up the module, here you pass your personal Openai api key through
-cache_file_name="cache_genre.json"  # name of the cache file to save the embedding and their buckts in
+### `get_cache(cache_file)`
+Retrieves a list of cached buckets.
 
-start_Genre = ["Drama", "Commedy", "Action", "romance", "documentry"]  # starting array of buckets, if there are no buckets found then this is the list of buckets that will be used
-cache, Genre = em.init(cache_file, start_Genre) # init cache return cache object and the array of buckets, in this case genres
+**Parameters:**
+- `cache_file` (*str*): Path to cache file.
 
-input_genre = input("Input a genre: ") #User input
-max_distance = 0.5 # max distance a word can be from the closest bucket before we create a new bucket
+**Returns:**
+- `array` (*list*): List of bucket names.
 
-closest_distance, closest_genre, bucket_id, bucket_binary_encoding = em.auto_sort(input_genre, max_distance, Genre, type_of_distance_calc="COSINE SIMILARITY", amount_of_binary_digits = 8)  # using autosort 
-print(closest_genre) # printing the closest bucket's name
-```
-Look at our examples file in our repo to get a better idea of how it works in practice!
+### `start_cache(cache, starting_array)`
+Populates the cache with initial buckets.
+
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `starting_array` (*list*): Initial words to store as buckets.
+
+---
+
+## Language Model Call
+
+### `llm_call(input_message)`
+Calls OpenAI's Chat API to get a **one-word response**.
+
+**Parameters:**
+- `input_message` (*str*): Input message.
+
+**Returns:**
+- `response` (*str*): LLM-generated one-word response.
+
+---
+
+## Adjusting Embeddings
+
+### `adjust(cache, word, word2)`
+Adjusts a word’s embedding by averaging it with another word's embedding.
+
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `word` (*str*): First word.
+- `word2` (*str*): Second word.
+
+### `adjusting_vectors(vec1, vec2)`
+Averages two embedding vectors.
+
+**Parameters:**
+- `vec1` (*numpy array*): First embedding vector.
+- `vec2` (*numpy array*): Second embedding vector.
+
+**Returns:**
+- `adjusted_embedding` (*numpy array*): Averaged vector.
+
+---
+
+## Auto-Sorting
+
+### `auto_sort(cache, word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits)`
+Automatically categorizes a word into the closest bucket or creates a new bucket if necessary.
+
+**Parameters:**
+- `cache` (*Cache object*): Cache instance.
+- `word` (*str*): Word to categorize.
+- `max_distance` (*float*): Threshold distance for creating a new bucket.
+- `bucket_array` (*list*): List of existing bucket names.
+- `type_of_distance_calc` (*str*): Distance metric (`"EUCLIDEAN DISTANCE"` or `"COSINE SIMILARITY"`).
+- `amount_of_binary_digits` (*int*): Limit for binary digit representation of bucket IDs.
+
+**Returns:**
+- `closest_distance` (*tuple*): Closest bucket and distance.
+- `closest_bucket` (*str*): Name of the closest bucket.
+- `bucket_id` (*int*): ID of the closest bucket.
+- `bucket_binary` (*numpy array*): Binary representation of bucket ID.
+
+---
+
+## Cache Class
+
+### `Cache(cache_file)`
+Manages caching of embeddings and bucket assignments.
+
+**Attributes:**
+- `cache` (*dict*): Stores word embeddings and IDs.
+- `cache_file` (*str*): Path to cache file.
+- `next_id` (*int*): Next available bucket ID.
+
+**Methods:**
+- `write_to_cache(key, embedding, assign_id=True)`: Stores embedding in cache.
+- `read_from_cache(key)`: Retrieves word ID from cache.
+- `get_id(key)`: Gets bucket ID for a word.
+- `get_embedding_from_cache(key)`: Retrieves stored embedding.
+- `save_cache()`: Saves cache to file.
+- `load_cache()`: Loads cache from file.
+- `clear_cache()`: Clears all cache data.
+
+---
+
+## Summary
+
+This module facilitates **text embedding, categorization, and automatic sorting** of words into semantic clusters. It employs OpenAI embeddings, **cosine similarity**, and **Euclidean distance** to optimize text classification.
+
+---
+
+## Future Enhancements
+
+- Debugging issues related to Euclidean distance sorting.
+- Improving efficiency of cache handling.
+- Extending auto-sort logic for larger datasets.
