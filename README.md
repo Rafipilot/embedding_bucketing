@@ -1,4 +1,4 @@
-# Documentation for Text Embedding and Bucket Categorization System
+# Text Embedding and Bucket Categorization System
 
 ## Overview
 
@@ -6,15 +6,10 @@ This Python module provides functionality for generating text embeddings using O
 
 ---
 
-## Dependencies
+## Installtion
+You can install this library with:
 
-Ensure the following Python libraries are installed before using this module:
-
-- `os` (built-in)
-- `json` (built-in)
-- `numpy`
-- `openai`
-- `sklearn.metrics.pairwise`
+`pip install git+https://github.com/Rafipilot/embedding_bucketing/edit/main/README.md#get_embeddinginput_to_model`
 
 ---
 
