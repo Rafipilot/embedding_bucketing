@@ -164,7 +164,13 @@ def averaging_and_compare(cache, word1, word2):  # in progress
 
 def auto_sort(cache, word, max_distance, bucket_array, type_of_distance_calc, amount_of_binary_digits):
     Dis_list = []
-    input_word_embedding = get_embedding(word)
+
+    if cache.get_embedding_from_cache(word):
+        input_word_embedding = cache.get_embedding_from_cache(word)
+    else:
+    
+        input_word_embedding = get_embedding(word)
+
     for bucket in bucket_array:
         if type_of_distance_calc.upper() == "EUCLIDEAN DISTANCE":    ## this was not working, please debug; when "EUCLIDEAN DISTANCE" is set, the else statement always prints
             distance = nearest_word_E_D(cache, bucket, input_word_embedding)
