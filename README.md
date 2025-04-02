@@ -9,7 +9,7 @@ This Python module provides functionality for generating text embeddings using O
 ## Installtion
 You can install this library with:
 
-`pip install git+https://github.com/Rafipilot/embedding_bucketing/edit/main/README.md#get_embeddinginput_to_model`
+`pip install [git+https://github.com/Rafipilot/embedding_bucketing/edit/main/README.md#get_embeddinginput_to_model](https://github.com/Rafipilot/embedding_bucketing)`
 
 ---
 
